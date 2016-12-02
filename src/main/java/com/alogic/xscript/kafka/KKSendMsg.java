@@ -1,6 +1,46 @@
 package com.alogic.xscript.kafka;
 
+import org.apache.kafka.clients.producer.Callback;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
+
+import com.alogic.xscript.kafka.util.KafkaUtil;
+
 //send masseage once
 public class KKSendMsg {
+	public static void SendMsg() throws Exception
+	{
+		String topicName = "test";
+		KafkaProducer<String, String> producer = KKProducer.CreateProducer();
+//		for(int i = 0; i < 100; i++)
+//		     producer.send(new ProducerRecord<String, String>(topicName, Integer.toString(i), Integer.toString(i)));
+//
+//		 producer.close();
+		int i = 0;
+		while(true) {
+			ProducerRecord<String, String> record = new ProducerRecord<String, String>(topicName, String.valueOf(i), "this is message"+i);
+			producer.send(record, new Callback() {
+				public void onCompletion(RecordMetadata metadata, Exception e) {
+					if (e != null)
+						e.printStackTrace();
+					System.out.println("message send to partition " + metadata.partition() + ", offset: " + metadata.offset());
+				}
+			});
+			i++;
+			Thread.sleep(1000);
+		}
+	}
+	public static void main(String[] args)
+	{
+		String topicName = "test";
+		String msg = "bilibili";
+		KafkaProducer<String, String> producer = KafkaUtil.getProducer();
+//		producer.send(new ProducerRecord<String, String>(topicName, msg));
+		for(int i = 0; i < 100; i++)
+		     producer.send(new ProducerRecord<String, String>(topicName, Integer.toString(i), msg));
+
+		 producer.close();
+	}
 
 }

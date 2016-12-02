@@ -12,6 +12,7 @@ import kafka.utils.ZKStringSerializer$;
 //bin/kafka-topics.sh --zookeeper zk_host:port/chroot --create --topic my_topic_name --partitions 20 --replication-factor 3 --config x=y
 public class KKCreateTopic {
 	public static void main(String[] args) {
+		
 	    String zookeeperConnect = "localhost:2181";
 	    int sessionTimeoutMs = 10 * 1000;
 	    int connectionTimeoutMs = 8 * 1000;
@@ -29,12 +30,20 @@ public class KKCreateTopic {
 	    boolean isSecureKafkaCluster = false;
 	    ZkUtils zkUtils = new ZkUtils(zkClient, new ZkConnection(zookeeperConnect), isSecureKafkaCluster);
 
-	    String topic = "my-topic";
-	    int partitions = 1;
-	    int replication = 1;
-	    Properties topicConfig = new Properties(); // add per-topic configurations settings here
-	    AdminUtils.createTopic(zkUtils, topic, partitions, replication, topicConfig,AdminUtils.createTopic$default$6());
-	    zkClient.close();
+	    String topicName = "my-topic";
+	    if(AdminUtils.topicExists(zkUtils, topicName))
+	    {
+	    	System.out.println(topicName+" has already been created!");
+	    }
+	    else
+	    {
+	    	int partitions = 1;
+		    int replication = 1;
+		    Properties topicConfig = new Properties(); // add per-topic configurations settings here
+		    AdminUtils.createTopic(zkUtils, topicName, partitions, replication, topicConfig,AdminUtils.createTopic$default$6());
+		    System.out.println(topicName+" is created successfully!");
+	    }
+//	    zkClient.close();
 	  }
 
 }
