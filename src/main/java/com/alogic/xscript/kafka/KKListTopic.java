@@ -40,27 +40,34 @@ public class KKListTopic {
 		boolean isSecureKafkaCluster = false;
 	    ZkUtils zkUtils = new ZkUtils(zkClient, new ZkConnection(zookeeperConnect), isSecureKafkaCluster);
 	    
-	    scala.collection.Map<String, Properties> topiclist = AdminUtils.fetchAllTopicConfigs(zkUtils);
-	    int size = topiclist.keys().size();
-	    System.out.println("the num of the topic is "+size);
-
-	    
-	    
-	    String temp = topiclist.keys().toString();
-	    System.out.println(temp);
-	    
-	    int length = temp.length();
-	    String result = temp.substring(4, length-1);
-	    
-	    result = result.replace(" ", "");
-	    String[] strs = result.split(",");
-	    System.out.println(strs.length);
-	    System.out.println("==========================="); 
+	    scala.collection.Seq<String> allTopics = zkUtils.getAllTopics();
+		   int size = allTopics.size();
+		   scala.collection.immutable.List<String> list = allTopics.toList();
+		   for(int i=0;i<size;i++)
+		   {
+			   System.out.println(list.apply(i));
+		   }
+//	    scala.collection.Map<String, Properties> topiclist = AdminUtils.fetchAllTopicConfigs(zkUtils);
+//	    int size = topiclist.keys().size();
+//	    System.out.println("the num of the topic is "+size);
+//
 //	    
-	    for(int i=0;i<strs.length;++i)
-	    {
-	    	System.out.println(strs[i]);
-	    }	  
+//	    
+//	    String temp = topiclist.keys().toString();
+//	    System.out.println(temp);
+//	    
+//	    int length = temp.length();
+//	    String result = temp.substring(4, length-1);
+//	    
+//	    result = result.replace(" ", "");
+//	    String[] strs = result.split(",");
+//	    System.out.println(strs.length);
+//	    System.out.println("==========================="); 
+////	    
+//	    for(int i=0;i<strs.length;++i)
+//	    {
+//	    	System.out.println(strs[i]);
+//	    }	  
 	    
 	}
   
