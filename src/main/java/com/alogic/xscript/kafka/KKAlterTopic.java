@@ -7,6 +7,7 @@ import org.I0Itec.zkclient.ZkConnection;
 
 import com.alogic.xscript.Main;
 
+import kafka.admin.AdminOperationException;
 import kafka.admin.AdminUtils;
 import kafka.admin.TopicCommand;
 import kafka.utils.ZKStringSerializer$;
@@ -39,10 +40,48 @@ public class KKAlterTopic {
 	    }
 	    else 
 	    {
-		    int partitions = 1;
-		    int replication = 1;
-		    Properties topicConfig = new Properties(); // add per-topic configurations settings here
-		    AdminUtils.createTopic(zkUtils, topicName, partitions, replication, topicConfig,AdminUtils.createTopic$default$6());
+		    int numPartitions = 2;
+		    //有三种修改的方式，增加分区，增加配置参数，删除配置参数
+		    
+		    //增加分区
+		    String[] optionsAddPartitions = new String[]{  
+		    	    "--alter",  
+		    	    "--zookeeper",  
+		    	    "localhost:2181",  
+		    	    "--topic",  
+		    	    "my_topic_name",  
+		    	    "--partitions",  
+		    	    "num"  
+		    	};  
+		    	optionsAddPartitions[4] = topicName;
+		    	optionsAddPartitions[6] = Integer.toString(numPartitions);
+		    	TopicCommand.main(optionsAddPartitions); 
+		    	String[] optionsAddConfigs = new String[]{  
+			    	    "--alter",  
+			    	    "--zookeeper",  
+			    	    "localhost:2181",  
+			    	    "--topic",  
+			    	    "my_topic_name",  
+			    	    "--config",  
+			    	    "item"  
+			    	};  
+		    	optionsAddPartitions[4] = topicName;
+		    	optionsAddPartitions[6] = "flush.messages=1";
+		    	TopicCommand.main(optionsAddConfigs); 
+		    	String[] optionsDeleteConfigs = new String[]{  
+			    	    "--alter",  
+			    	    "--zookeeper",  
+			    	    "localhost:2181",  
+			    	    "--topic",  
+			    	    "my_topic_name",  
+			    	    "--deleteconfig",  
+			    	    "item"  
+			    	};  
+		    	optionsAddPartitions[4] = topicName;
+		    	optionsAddPartitions[6] = "flush.messages=1";
+		    	TopicCommand.main(optionsDeleteConfigs); 
+		    	
+		    
 		}
 
 //	    AdminUtils.createOrUpdateTopicPartitionAssignmentPathInZK(arg0, arg1, arg2, arg3, arg4);
