@@ -12,6 +12,7 @@ import java.util.Properties;
 import org.I0Itec.zkclient.ZkClient;
 import org.I0Itec.zkclient.ZkConnection;
 import org.apache.kafka.common.requests.MetadataResponse;
+import org.apache.zookeeper.server.quorum.Leader;
 
 import kafka.admin.AdminUtils;
 import kafka.admin.TopicCommand;
@@ -19,12 +20,16 @@ import kafka.api.LeaderAndIsr;
 import kafka.api.PartitionMetadata;
 import kafka.api.TopicMetadata;
 import kafka.common.Topic;
+import kafka.common.TopicAndPartition;
+import kafka.controller.IsrChangeNotificationListener;
 import kafka.utils.ZKStringSerializer$;
 import kafka.utils.ZkUtils;
 import scala.Option;
 import scala.annotation.implicitNotFound;
 import scala.collection.Map;
 import scala.collection.Seq;
+import scala.collection.generic.BitOperations.Int;
+import scala.collection.mutable.Set;
 import scala.collection.parallel.ParIterableLike.Partition;
 
 //bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic my-replicated-topic
@@ -47,7 +52,7 @@ public class KKDescribeTopic {
 	{
 		
 		   scala.collection.Seq<String> allTopics = zkUtils.getAllTopics();
-		   int size = allTopics.size();
+//		   int size = allTopics.size();
 		   //System.out.println(size);
 		   String topicName = "my-topic";
 		scala.collection.immutable.List<String> list = allTopics.toList();
@@ -59,23 +64,62 @@ public class KKDescribeTopic {
 		Seq<Object> partitionNum = PartitionsForTopics.apply(topicName);
 		int PartitionCount = partitionNum.size();//第一行总和第一项=====================
 		
+		
+		Map<String, Map<Object, Seq<Object>>> replicaTopics = zkUtils.getPartitionAssignmentForTopics(allTopics);
+		Map<Object, Seq<Object>> PartitionAssignment = replicaTopics.apply(topicName);
+		//TopicAndPartition topicAndPartition = new TopicAndPartition(topicName, PartitionCount);
+		int ReplicationFactors = PartitionAssignment.size();
+		//System.out.println(info);				
+		System.out.println("ReplicationFactors===="+ReplicationFactors);
+		
+		Map<String, Properties> topicsConfig = AdminUtils.fetchAllTopicConfigs(zkUtils);
+		Properties config = topicsConfig.apply(topicName);
+		//Properties topicConfig = AdminUtils.fetchEntityConfig(zkUtils, topicName, topicName);
+		boolean flag = config.isEmpty();
+		System.out.println(config.size());
+		System.out.println("configs=========="+config.toString());
+		
+		
+		
+		List<Object> IsrList = new ArrayList<Object>();
 		System.out.println("partitionNum "+PartitionCount);
 		for(int i=0;i<PartitionCount;++i)
 		{
 			Object temp = partitionNum.apply(0).toString();	
 			int num = Integer.parseInt(temp.toString());
-			System.out.print("partition "+num+" ");//第二行第一项
+			System.out.println("partition "+num+" ");//第二行第一项
 			Option<LeaderAndIsr> leaderIsr = zkUtils.getLeaderAndIsrForPartition(topicName, num);
-			String leader = leaderIsr.toString();
-			leader = leader.substring(4);
-			leader = leader.replace("(", "");
-			leader = leader.replace(")", "");
-			leader = leader.replace("{", "");
-			leader = leader.replace("}", "");
-			leader = leader.replace("\"", "");
-			leader = leader.replace(",", " ");
-			leader = leader.replace(":", " ");
-			System.out.println(leader);
+			Seq<Object> SyncReplicas = zkUtils.getInSyncReplicasForPartition(topicName, num);
+			System.out.println("======Replics===========");
+			for(int k=0;k<SyncReplicas.length();++k)
+			{
+				System.out.print(SyncReplicas.apply(k)+" ");
+				System.out.println("");
+			}
+			//System.out.println(SyncReplicas.length());
+			scala.collection.immutable.List<Object> Isr = leaderIsr.get().isr();
+		    int IsrNum = Isr.size();
+		    System.out.println("======Isr=============");
+		    for(int j=0;j<IsrNum;++j)
+		    {
+		    	IsrList.add(Isr.apply(j));
+		    	System.out.println(IsrList.get(j));
+		    }
+		    int Leader = leaderIsr.get().leader();
+		    System.out.println("======Leader=============");
+		    System.out.println(Leader);
+		    
+//		    System.out.println( Isr.size());
+//			String leader = leaderIsr.toString();
+//			leader = leader.substring(4);
+//			leader = leader.replace("(", "");
+//			leader = leader.replace(")", "");
+//			leader = leader.replace("{", "");
+//			leader = leader.replace("}", "");
+//			leader = leader.replace("\"", "");
+//			leader = leader.replace(",", " ");
+//			leader = leader.replace(":", " ");
+//			System.out.println(leader);//第二行剩下信息
 		}
 		
 		
