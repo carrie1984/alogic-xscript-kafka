@@ -1,16 +1,32 @@
 package com.alogic.xscript.kafka;
 
-import java.util.Properties;
-
-import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import com.alogic.xscript.ExecuteWatcher;
+import com.alogic.xscript.Logiclet;
+import com.alogic.xscript.LogicletContext;
+import com.alogic.xscript.plugins.Segment;
+import com.anysoft.util.Properties;
+import com.anysoft.util.PropertiesConstants;
 
 import com.alogic.xscript.kafka.util.KafkaUtil;
 
+/*
+ * prod-conn实现类
+ * 
+ * @author cuijialing
+ */
+
 //kafka-console-producer.bat --broker-list localhost:9092 --topic test
-public class KKProducer {
+public class KKProducer extends Segment {
+	
+	protected String cid = "prod-conn";
+	public KKProducer(String tag, Logiclet p) {
+		super(tag, p);
+		// TODO Auto-generated constructor stub
+		registerModule("send", KKSendMsg.class);
+	}
+
 	public static  KafkaProducer< String, String> CreateProducer()
 	{
 		 KafkaProducer<String, String> producer = KafkaUtil.getProducer();

@@ -65,8 +65,8 @@ public class KKAlterTopic {
 			    	    "--config",  
 			    	    "item"  
 			    	};  
-		    	optionsAddPartitions[4] = topicName;
-		    	optionsAddPartitions[6] = "flush.messages=1";
+		    	optionsAddConfigs[4] = topicName;
+		    	optionsAddConfigs[6] = "flush.messages=1";
 		    	TopicCommand.main(optionsAddConfigs); 
 		    	String[] optionsDeleteConfigs = new String[]{  
 			    	    "--alter",  
@@ -77,8 +77,8 @@ public class KKAlterTopic {
 			    	    "--deleteconfig",  
 			    	    "item"  
 			    	};  
-		    	optionsAddPartitions[4] = topicName;
-		    	optionsAddPartitions[6] = "flush.messages=1";
+		    	optionsDeleteConfigs[4] = topicName;
+		    	optionsDeleteConfigs[6] = "flush.messages=1";
 		    	TopicCommand.main(optionsDeleteConfigs); 
 		    	
 		    
