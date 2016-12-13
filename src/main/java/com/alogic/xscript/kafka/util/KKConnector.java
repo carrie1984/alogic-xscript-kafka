@@ -91,8 +91,10 @@ public class KKConnector {
 			AdminUtils.createTopic(zkUtils, topicName, partition, replication, configs,AdminUtils.createTopic$default$6());		    
 		}
 	}
+	
+	
 	//修改topic
-	public void alterTopic(String type,String topicName,String param)
+	public static void alterTopic(String type,String topicName,String param)
 	{
 		if(type!="partitions"&&type!="config"&&type!="deleteconfig")
 		{
@@ -161,17 +163,17 @@ public class KKConnector {
 	}
 	
 	//查看topic详细信息
-	//初始设定需要输出的参数值
-	public int partitionCount;
-	public int ReplicationFactor;
-	public java.util.Properties config;
-	public List<Integer> partitionList;
-	public List<Seq<Object>> replicasList;
-	public List<Integer> leaderList;
-	public List<List<Object>> AllIsrList;
+	//初始设定需要输出的参数值,参数需要进行初始化，否则会出现空指针异常报错
+	public static int partitionCount = 0;
+	public static int ReplicationFactor = 0;
+	public static java.util.Properties config = new java.util.Properties();
+	public static List<Integer> partitionList = new ArrayList<>();
+	public static List<Seq<Object>> replicasList = new ArrayList<>();
+	public static List<Integer> leaderList = new ArrayList<>();
+	public static List<List<Object>> AllIsrList = new ArrayList<>();
 
 	
-	public void describeTopic(String topicName)
+	public static void  describeTopic(String topicName)
 	{
 		scala.collection.Seq<String> allTopics = zkUtils.getAllTopics();
 		scala.collection.immutable.List<String> list = allTopics.toList();
@@ -233,7 +235,7 @@ public class KKConnector {
 	}
 	
 	//删除topic
-	public void deleteTopic(String topicName)
+	public static void deleteTopic(String topicName)
 	{
 		 if(!AdminUtils.topicExists(zkUtils, topicName))
 		    {
