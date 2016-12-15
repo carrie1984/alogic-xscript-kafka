@@ -79,27 +79,27 @@ public class KafkaUtil {
 	
 	public static void main(String[] args)
 	{
-		consumer = getConsumer();
-		//kProducer = getProducer();
+		//consumer = getConsumer();
+		kProducer = getProducer();
 		
-		//ProducerRecord<String, String> record = new ProducerRecord<String, String>("test", "1", "hhh");
-		//kProducer.send(record);
-		List<String> msglist = new ArrayList<>();
-		Map<String, Integer> topicCountMap = new HashMap<String, Integer>();
-        topicCountMap.put("test",1);
-
-        StringDecoder keyDecoder = new StringDecoder(new VerifiableProperties());
-        StringDecoder valueDecoder = new StringDecoder(new VerifiableProperties());
-
-        Map<String, List<KafkaStream<String, String>>> consumerMap = 
-                consumer.createMessageStreams(topicCountMap,keyDecoder,valueDecoder);
-        KafkaStream<String, String> stream = consumerMap.get("test").get(0);
-        ConsumerIterator<String, String> it = stream.iterator();
-        while (it.hasNext())
-        {
-        	System.out.println(it.next().message());
-        	//msglist.add(it.next().message().toString());
-        }
+		ProducerRecord<String, String> record = new ProducerRecord<String, String>("test", "1", "bbb");
+		kProducer.send(record);
+//		List<String> msglist = new ArrayList<>();
+//		Map<String, Integer> topicCountMap = new HashMap<String, Integer>();
+//        topicCountMap.put("test",1);
+//
+//        StringDecoder keyDecoder = new StringDecoder(new VerifiableProperties());
+//        StringDecoder valueDecoder = new StringDecoder(new VerifiableProperties());
+//
+//        Map<String, List<KafkaStream<String, String>>> consumerMap = 
+//                consumer.createMessageStreams(topicCountMap,keyDecoder,valueDecoder);
+//        KafkaStream<String, String> stream = consumerMap.get("test").get(0);
+//        ConsumerIterator<String, String> it = stream.iterator();
+//        while (it.hasNext())
+//        {
+//        	System.out.println(it.next().message());
+//        	//msglist.add(it.next().message().toString());
+//        }
         
 		//System.out.println("====="+kProducer.send(record).isDone());
 		

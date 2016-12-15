@@ -51,7 +51,7 @@ public class KKSend extends AbstractLogiclet{
 			ExecuteWatcher watcher) {
 		ProducerConnector producer = ctx.getObject(pid);
 		String result = "";
-		result = producer.sendMsg(topic,key,value);
+		result = producer.sendMsg(topic,key,value).toString();
 		root.put(tag, result);
 	}
 

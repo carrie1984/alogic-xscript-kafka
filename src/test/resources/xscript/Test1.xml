@@ -11,11 +11,22 @@
 			   autoOffsetReset="smallest"
 			   serializerClass="kafka.serializer.StringEncoder"
 			   > 
-	<receive id="msg" topic="test" thread="1">
+	<receive topic="test" thread="1">
 		
 	</receive>
 </consumer-conn>
 
+<prod-conn bootstrapServers="127.0.0.1:9092" 
+			acks="all"
+			retries="0"
+			batchSize="16384"
+			lingerMs="1"
+			bufferMemory="33554432"
+			keySerializer="org.apache.kafka.common.serialization.StringSerializer"
+			valueSerializer="org.apache.kafka.common.serialization.StringSerializer"
+			>
+	<send topic="test" key="33" data="hello"></send>
+</prod-conn>
 
 </script>
 

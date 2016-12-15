@@ -1,14 +1,10 @@
 package com.alogic.xscript.kafka.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -20,7 +16,6 @@ import kafka.consumer.ConsumerIterator;
 import kafka.consumer.KafkaStream;
 import kafka.serializer.StringDecoder;
 import kafka.utils.VerifiableProperties;
-import scala.collection.generic.BitOperations.Int;
 
 
 /*
@@ -57,13 +52,13 @@ public class ConsumerConnector {
 	
 	public ConsumerConnector(Properties p)
 	{
-		zookeeperConnector = PropertiesConstants.getRaw(p, "zookeeperConnector", zookeeperConnector);
-		groupId = PropertiesConstants.getRaw(p, "groupId", groupId);
+		zookeeperConnector = PropertiesConstants.getString(p, "zookeeperConnector", zookeeperConnector);
+		groupId = PropertiesConstants.getString(p, "groupId", groupId);
 		syncTimeMs = PropertiesConstants.getInt(p, "syncTimeMs", syncTimeMs);
 		sessionTimeoutMs = PropertiesConstants.getInt(p, "sessionTimeoutMs", sessionTimeoutMs);
 		autoCommitIntervalMs = PropertiesConstants.getInt(p, "autoCommitIntervalMs", autoCommitIntervalMs);
-		autoOffsetReset = PropertiesConstants.getRaw(p, "autoOffsetReset", autoOffsetReset);
-		serializerClass = PropertiesConstants.getRaw(p, "valueSerializer", serializerClass);
+		autoOffsetReset = PropertiesConstants.getString(p, "autoOffsetReset", autoOffsetReset);
+		serializerClass = PropertiesConstants.getString(p, "valueSerializer", serializerClass);
 		
 		props.put("zookeeper.connect", zookeeperConnector);
 		props.put("group.id", groupId);
@@ -107,28 +102,11 @@ public class ConsumerConnector {
 	 */
 	public void connect()
 	{
+		ConsumerConfig config = new ConsumerConfig(props);
 		
-			ConsumerConfig config = new ConsumerConfig(props);
 
-	        consumer = kafka.consumer.Consumer.createJavaConsumerConnector(config);
-//		java.util.Properties props = new java.util.Properties();
-        //zookeeper 配置
-//        props.put("zookeeper.connect", "127.0.0.1:2181");
-//
-//        //group 代表一个消费组
-//        props.put("group.id", "test");
-//
-//        //zk连接超时
-//        props.put("zookeeper.session.timeout.ms", "4000");
-//        props.put("zookeeper.sync.time.ms", "200");
-//        props.put("auto.commit.interval.ms", "1000");
-//        props.put("auto.offset.reset", "smallest");
-//        //序列化类
-//        props.put("serializer.class", "kafka.serializer.StringEncoder");
-//
-//        ConsumerConfig config = new ConsumerConfig(props);
-//
-//        consumer = kafka.consumer.Consumer.createJavaConsumerConnector(config);
+        consumer = kafka.consumer.Consumer.createJavaConsumerConnector(config);
+        
 	
 	}
 	/*
