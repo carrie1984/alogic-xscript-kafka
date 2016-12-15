@@ -54,7 +54,7 @@ public class KKDescribeTopic {
 		   scala.collection.Seq<String> allTopics = zkUtils.getAllTopics();
 //		   int size = allTopics.size();
 		   //System.out.println(size);
-		   String topicName = "my-topic";
+		   String topicName = "testxscript";
 		scala.collection.immutable.List<String> list = allTopics.toList();
 //		Map<String, Map<Object, Seq<Object>>> PartitionAssignmentForTopics  = zkUtils.getPartitionAssignmentForTopics(allTopics);
 //		Map<Object, Seq<Object>> PerInfo = PartitionAssignmentForTopics.apply(topicName);
@@ -87,7 +87,7 @@ public class KKDescribeTopic {
 		{
 			Object temp = partitionNum.apply(0).toString();	
 			int num = Integer.parseInt(temp.toString());
-			System.out.println("partition "+num+" ");//第二行第一项
+			System.out.println("partition "+i+" ");//第二行第一项
 			Option<LeaderAndIsr> leaderIsr = zkUtils.getLeaderAndIsrForPartition(topicName, num);
 			Seq<Object> SyncReplicas = zkUtils.getInSyncReplicasForPartition(topicName, num);
 			System.out.println("======Replics===========");

@@ -33,7 +33,7 @@ public class KKDeleteTopic extends KKAdminOperation{
 	protected void onExecute(KKConnector row, Map<String, Object> root, Map<String, Object> current,
 			LogicletContext ctx, ExecuteWatcher watcher) {
 		// TODO Auto-generated method stub
-		KKConnector.deleteTopic(topic);
+		row.deleteTopic(topic);
 		
 	}
 	

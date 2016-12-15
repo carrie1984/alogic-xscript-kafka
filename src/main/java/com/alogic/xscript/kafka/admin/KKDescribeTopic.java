@@ -29,31 +29,13 @@ public class KKDescribeTopic extends KKAdminOperation{
 	@Override
 	protected void onExecute(KKConnector row, Map<String, Object> root, Map<String, Object> current,
 			LogicletContext ctx, ExecuteWatcher watcher) {
-		// TODO Auto-generated method stub
-		Gson gson = new Gson();
-		KKConnector.describeTopic(topic);
-		//以下是将结果转换为json格式的方法
-		
-		HashMap<String, Object> AllInfo = new HashMap<>();
-		
-		HashMap<String, Object> hashsum = new HashMap<>(); 
-		hashsum.put("partitionCount", KKConnector.partitionCount);
-		hashsum.put("ReplicationFactor", KKConnector.ReplicationFactor);
-		hashsum.put("config", KKConnector.config);
-		AllInfo.put("sum",hashsum);
-		
-		HashMap<String, Object> hashdetail = new HashMap<>();
-		hashdetail.put("Partition", KKConnector.partitionList);
-		hashdetail.put("Leader", KKConnector.leaderList);
-		hashdetail.put("ReplicasList", KKConnector.replicasList);
-		hashdetail.put("Isr", KKConnector.AllIsrList);
-		AllInfo.put("detail", hashdetail);
-		
-		
-		root.put(tag, AllInfo);
-		
-		
-		
+		System.out.println("what=====================");
+		String topicValue = ctx.transform(topic).trim();
+		HashMap<String, Object> AllInfo = row.describeTopic(topicValue);
+	
+		root.put(tag, AllInfo);		
 	}
+	
+
 
 }

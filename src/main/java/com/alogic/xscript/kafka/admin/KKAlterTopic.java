@@ -12,7 +12,6 @@ import com.anysoft.util.PropertiesConstants;
 public class KKAlterTopic extends KKAdminOperation{
 	
 	protected String topic = "";
-	protected String type = "";
 	protected String param = "";
 
 	public KKAlterTopic(String tag, Logiclet p) {
@@ -25,7 +24,6 @@ public class KKAlterTopic extends KKAdminOperation{
 	{
 		super.configure(p);
 		topic = PropertiesConstants.getRaw(p, "topic", topic);
-		type = PropertiesConstants.getRaw(p, "type", type);
 		param = PropertiesConstants.getRaw(p, "param", param);
 		
 	}
@@ -34,7 +32,8 @@ public class KKAlterTopic extends KKAdminOperation{
 	protected void onExecute(KKConnector row, Map<String, Object> root, Map<String, Object> current,
 			LogicletContext ctx, ExecuteWatcher watcher) {
 		// TODO Auto-generated method stub
-		KKConnector.alterTopic(type, topic, param);
+		System.out.println("======alter=========");
+		row.alterTopic(topic, param);
 		
 	}
 

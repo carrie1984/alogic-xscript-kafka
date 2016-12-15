@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<script>
+<using xmlTag="admin-conn" module="com.alogic.xscript.kafka.admin.KKAdminConn" />
+
+<admin-conn zookeeperConnect="127.0.0.1:2181" sessionTimeoutMs="10000" connectionTimeoutMs="8000">	
+	
+    <alter-topic topic="testxscript" param="5"></alter-topic>
+
+</admin-conn>
+
+</script>

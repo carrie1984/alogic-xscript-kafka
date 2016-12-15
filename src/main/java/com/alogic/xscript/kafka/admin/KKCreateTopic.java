@@ -48,8 +48,9 @@ public class KKCreateTopic extends KKAdminOperation{
 			LogicletContext ctx, ExecuteWatcher watcher) {
 		// TODO Auto-generated method stub
 		java.util.Properties topicConfig = new java.util.Properties(); // add per-topic configurations settings here
-	    topicConfig.setProperty(topicConfigpara, topicConfignum);
-	    KKConnector.createTopic(topic,partition,replication,topicConfig);
+	    //topicConfig.setProperty(topicConfigpara, topicConfignum);
+
+	    row.createTopic(topic,partition,replication,topicConfig);
 	}
 
 }

@@ -1,7 +1,10 @@
 package com.alogic.xscript.kafka.util;
 
+import java.util.concurrent.Future;
+
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -17,6 +20,8 @@ public class ProducerConnector {
 	 * a logger of log4j
 	 */
 	protected static Logger logger = LogManager.getLogger(ProducerConnector.class);
+	
+	
 	/*
 	 * producer的连接参数
 	 */
@@ -140,15 +145,19 @@ public class ProducerConnector {
 	 * @param value 
 	 */
 	
-	public void sendMsg(String topic,String key,String value)
+	public String sendMsg(String topic,String key,String value)
 	{
 		if(!isConnected())
 		{
 			logger.error("the producer is not connected");
 		}
 		
+
 		ProducerRecord<String, String> record = new ProducerRecord<String, String>(topic, key, value);
-		producer.send(record);
+		Future<RecordMetadata> sendresult = producer.send(record);
+		
+		return String.valueOf(sendresult.isDone());
+			
 	}	
 
 }

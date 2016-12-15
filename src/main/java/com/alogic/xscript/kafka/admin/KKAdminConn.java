@@ -46,9 +46,11 @@ public class KKAdminConn extends Segment{
 			Map<String, Object> current, LogicletContext ctx, ExecuteWatcher watcher)
 	{
 		KKConnector connector = new KKConnector(ctx, zookeeperConnect,sessionTimeoutMs, connectionTimeoutMs);
+	//	System.out.println(connector.toString());
 		try
 		{
 			ctx.setObject(cid, connector);
+			super.onExecute(root, current, ctx, watcher);
 		}finally
 		{
 			ctx.removeObject(cid);

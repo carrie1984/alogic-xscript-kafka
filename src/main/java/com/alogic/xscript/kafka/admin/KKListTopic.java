@@ -23,11 +23,12 @@ public class KKListTopic extends KKAdminOperation{
 	protected void onExecute(KKConnector row, Map<String, Object> root, Map<String, Object> current,
 			LogicletContext ctx, ExecuteWatcher watcher) {
 		// TODO Auto-generated method stub
-		Gson gson = new Gson();
-		List<String> topiclist = KKConnector.ListTopic();
+	//	Gson gson = new Gson();
+		
+		List<String> topiclist = row.ListTopic();
 		//得到列表后需要将他转换为json格式便于处理，此时的topiclist已经是可以输出的结果。
 		//需要将其转换为json格式更加方便
-		root.put(tag, gson.toJson(topiclist));
+		root.put(tag, topiclist);
 		
 	}
 
