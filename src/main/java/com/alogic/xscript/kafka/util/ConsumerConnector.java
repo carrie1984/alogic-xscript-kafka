@@ -140,7 +140,6 @@ public class ConsumerConnector {
 		
 	}
 	
-
 	
 	public void reconnect()
 	{
@@ -167,20 +166,29 @@ public class ConsumerConnector {
         KafkaStream<String, String> stream = consumerMap.get(topic).get(0);
         ConsumerIterator<String, String> it = stream.iterator();
         long timeStart=System.currentTimeMillis() ;
-        
+        int i=0;
         while (it.hasNext())
         {
-        	
-        	long timeEnd = System.currentTimeMillis();
-        	if(timeEnd-timeStart>30000)
-        	{
-        		break;
-        	}
         	String msg = it.next().message().toString();
         	System.out.println(msg);
         	msglist.add(msg);
+        	i++;
+        	if(i>=2)
+        	{
+        		break;
+        	}
+        		
+        	//long timeEnd = System.currentTimeMillis();
+        	//if(timeEnd-timeStart>30000)
+        	//{
+        	//	break;
+        	//}
         }
+        
+        	//consumer.shutdown();
+           
         	return msglist;
+        	
             
         
 		

@@ -1,6 +1,7 @@
 package com.alogic.xscript.kafka.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,8 @@ import kafka.javaapi.producer.Producer;
 import kafka.serializer.StringDecoder;
 import kafka.utils.VerifiableProperties;
 
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 /*
@@ -80,16 +83,37 @@ public class KafkaUtil {
         return consumer;
 		
 	}
+	public static void pollconsumer()
+	{
+		 Properties props = new Properties();
+	     props.put("bootstrap.servers", "localhost:9092");
+	     props.put("group.id", "test");
+	     props.put("enable.auto.commit", "true");
+	     props.put("auto.commit.interval.ms", "1000");
+	     props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+	     props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+	     KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
+		 String topicName = "test";
+		 
+	     consumer.subscribe(Arrays.asList(topicName));
+	    // while (true) {
+	         ConsumerRecords<String, String> records = consumer.poll(1000);
+	         for (ConsumerRecord<String, String> record : records)
+	             System.out.printf("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value());
+	     //}
+	         consumer.close();
+	}
 	
 	public static void main(String[] args)
 	{
 		//consumer = getConsumer();
+		
 
 		kProducer = getProducer();
 		System.out.println(kProducer.toString());
-		ProducerRecord<String, String> record = new ProducerRecord<String, String>("test", "1", "20161215 20:13");
+		ProducerRecord<String, String> record1 = new ProducerRecord<String, String>("test", "1", "20161216 h1");
 		try {
-			kProducer.send(record).get();
+			kProducer.send(record1).get();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -97,6 +121,38 @@ public class KafkaUtil {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		ProducerRecord<String, String> record2 = new ProducerRecord<String, String>("test", "1", "20161216 h2");
+		try {
+			kProducer.send(record2).get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ProducerRecord<String, String> record3 = new ProducerRecord<String, String>("test", "1", "20161216 h3");
+		try {
+			kProducer.send(record3).get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ProducerRecord<String, String> record4 = new ProducerRecord<String, String>("test", "1", "20161216 h4");
+		try {
+			kProducer.send(record4).get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		kProducer.close();
+		pollconsumer();
 //		List<String> msglist = new ArrayList<>();
 //		Map<String, Integer> topicCountMap = new HashMap<String, Integer>();
 //        topicCountMap.put("test",1);
@@ -109,7 +165,7 @@ public class KafkaUtil {
 //        KafkaStream<String, String> stream = consumerMap.get("test").get(0);
 //        ConsumerIterator<String, String> it = stream.iterator();
 //        while (it.hasNext())
-//        {
+//       {
 //        	System.out.println(it.next().message());
 //        	//msglist.add(it.next().message().toString());
 //        }
