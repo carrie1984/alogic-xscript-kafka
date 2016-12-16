@@ -10,14 +10,14 @@ import com.alogic.xscript.plugins.Segment;
 import com.anysoft.util.Properties;
 import com.anysoft.util.PropertiesConstants;
 
-public class KKConsConn extends Segment{
+public class KKPusher extends Segment{
 
-	public KKConsConn(String tag, Logiclet p) {
+	public KKPusher(String tag, Logiclet p) {
 		super(tag, p);
 		// TODO Auto-generated constructor stub
-		registerModule("receive", KKReceive.class);
+		registerModule("mq-push", KKPush.class);
 	}
-	protected String cid = "$consumer-conn";
+	protected String cid = "$mq-pusher";
 	/*
 	 * consumer 连接参数
 	 */

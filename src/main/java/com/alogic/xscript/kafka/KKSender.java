@@ -10,13 +10,13 @@ import com.alogic.xscript.plugins.Segment;
 import com.anysoft.util.Properties;
 import com.anysoft.util.PropertiesConstants;
 
-public class KKProdConn extends Segment {
-	public KKProdConn(String tag, Logiclet p) {
+public class KKSender extends Segment {
+	public KKSender(String tag, Logiclet p) {
 		super(tag, p);
 		// TODO Auto-generated constructor stub
-		registerModule("send", KKSend.class);
+		registerModule("mq-send", KKSend.class);
 	}
-	protected String cid = "$prod-conn";
+	protected String cid = "$mq-sender";
 	/*
 	 * producer的连接参数
 	 */
