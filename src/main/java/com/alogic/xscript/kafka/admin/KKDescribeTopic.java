@@ -24,6 +24,7 @@ public class KKDescribeTopic extends KKAdminOperation{
 	public void configure(Properties p)
 	{
 		topic = PropertiesConstants.getRaw(p, "topic", topic);
+		System.out.println(topic+"=============");
 	}
 
 	@Override

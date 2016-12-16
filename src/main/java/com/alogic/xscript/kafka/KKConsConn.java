@@ -24,9 +24,9 @@ public class KKConsConn extends Segment{
 	//Kafka集群连接串，可以由多个host:port组成
 	protected String zookeeperConnector = "$zookeeperConnector";
 	protected String groupId = "";
-	protected int syncTimeMs = 200;
-	protected int sessionTimeoutMs = 4000;
-	protected int autoCommitIntervalMs = 1000;
+	protected String syncTimeMs = "200";
+	protected String sessionTimeoutMs = "4000";
+	protected String autoCommitIntervalMs = "1000";
 	protected String autoOffsetReset = "smallest";
 	protected String serializerClass = "kafka.serializer.StringEncoder";
 	
@@ -38,9 +38,9 @@ public class KKConsConn extends Segment{
 		cid = PropertiesConstants.getString(p,"cid",cid,true);
 		zookeeperConnector = PropertiesConstants.getRaw(p, "zookeeperConnector", zookeeperConnector);
 		groupId = PropertiesConstants.getRaw(p, "groupId", groupId);
-		syncTimeMs = PropertiesConstants.getInt(p, "syncTimeMs", syncTimeMs);
-		sessionTimeoutMs = PropertiesConstants.getInt(p, "sessionTimeoutMs", sessionTimeoutMs);
-		autoCommitIntervalMs = PropertiesConstants.getInt(p, "autoCommitIntervalMs", autoCommitIntervalMs);
+		syncTimeMs = PropertiesConstants.getString(p, "syncTimeMs", syncTimeMs);
+		sessionTimeoutMs = PropertiesConstants.getString(p, "sessionTimeoutMs", sessionTimeoutMs);
+		autoCommitIntervalMs = PropertiesConstants.getString(p, "autoCommitIntervalMs", autoCommitIntervalMs);
 		autoOffsetReset = PropertiesConstants.getRaw(p, "autoOffsetReset", autoOffsetReset);
 		serializerClass = PropertiesConstants.getRaw(p, "valueSerializer", serializerClass);
 	}

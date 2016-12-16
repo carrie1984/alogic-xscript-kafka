@@ -32,11 +32,11 @@ public class ConsumerConnector {
 	 */
 	//Kafka集群连接串，可以由多个host:port组成
 	
-	protected String zookeeperConnector = "$zookeeperConnector";
+	protected String zookeeperConnector = "localhost:2181";
 	protected String groupId = "test";
-	protected int syncTimeMs = 200;
-	protected int sessionTimeoutMs = 4000;
-	protected int autoCommitIntervalMs = 1000;
+	protected String syncTimeMs = "200";
+	protected String sessionTimeoutMs = "4000";
+	protected String autoCommitIntervalMs = "1000";
 	protected String autoOffsetReset = "smallest";
 	protected String serializerClass = "kafka.serializer.StringEncoder";
 	
@@ -54,9 +54,9 @@ public class ConsumerConnector {
 	{
 		zookeeperConnector = PropertiesConstants.getString(p, "zookeeperConnector", zookeeperConnector);
 		groupId = PropertiesConstants.getString(p, "groupId", groupId);
-		syncTimeMs = PropertiesConstants.getInt(p, "syncTimeMs", syncTimeMs);
-		sessionTimeoutMs = PropertiesConstants.getInt(p, "sessionTimeoutMs", sessionTimeoutMs);
-		autoCommitIntervalMs = PropertiesConstants.getInt(p, "autoCommitIntervalMs", autoCommitIntervalMs);
+		syncTimeMs = PropertiesConstants.getString(p, "syncTimeMs", syncTimeMs);
+		sessionTimeoutMs = PropertiesConstants.getString(p, "sessionTimeoutMs", sessionTimeoutMs);
+		autoCommitIntervalMs = PropertiesConstants.getString(p, "autoCommitIntervalMs", autoCommitIntervalMs);
 		autoOffsetReset = PropertiesConstants.getString(p, "autoOffsetReset", autoOffsetReset);
 		serializerClass = PropertiesConstants.getString(p, "valueSerializer", serializerClass);
 		
@@ -70,8 +70,8 @@ public class ConsumerConnector {
 	    connect();
 	     	
 	}
-	public ConsumerConnector(Properties p,String zookeeperconnect,String groupid,int synctimems,
-			int sessiontimeoutms,int autocommitintervalms,String autooffsetreset,
+	public ConsumerConnector(Properties p,String zookeeperconnect,String groupid,String synctimems,
+			String sessiontimeoutms,String autocommitintervalms,String autooffsetreset,
 			String serializerclass
 			)
 	{
@@ -83,6 +83,14 @@ public class ConsumerConnector {
 		autoOffsetReset = autooffsetreset;
 		serializerClass = serializerclass;
 		
+		
+		System.err.println("zookeeperConnector "+zookeeperConnector);
+		System.err.println("groupId "+groupId);
+		System.err.println("syncTimeMs "+syncTimeMs);
+		System.err.println("sessionTimeoutMs "+sessionTimeoutMs);
+		System.err.println("autoCommitIntervalMs "+autoCommitIntervalMs);
+		System.err.println("autoOffsetReset "+autoOffsetReset);
+		System.err.println("serializerClass "+serializerClass);
 		
 		props.put("zookeeper.connect", zookeeperConnector);
 		props.put("group.id", groupId);
@@ -102,10 +110,23 @@ public class ConsumerConnector {
 	 */
 	public void connect()
 	{
-		ConsumerConfig config = new ConsumerConfig(props);
+		System.err.println("zookeeperConnector "+props.getProperty("zookeeper.connect"));
+		System.err.println("groupId "+props.getProperty("group.id"));
+		System.err.println("syncTimeMs "+props.getProperty("zookeeper.session.timeout.ms"));
+		System.err.println("sessionTimeoutMs "+props.getProperty("zookeeper.sync.time.ms"));
+		System.err.println("autoCommitIntervalMs "+props.getProperty("auto.commit.interval.ms"));
+		System.err.println("autoOffsetReset "+props.getProperty("auto.offset.reset"));
+		System.err.println("serializerClass "+props.getProperty("serializer.class"));
 		
-
+		ConsumerConfig config = new ConsumerConfig(props);
         consumer = kafka.consumer.Consumer.createJavaConsumerConnector(config);
+//        try {
+//			consumer.wait(timeout);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		//consumer = com.alogic.xscript.kafka.util.KafkaUtil.getConsumer();
         
 	
 	}
@@ -145,10 +166,19 @@ public class ConsumerConnector {
                 consumer.createMessageStreams(topicCountMap,keyDecoder,valueDecoder);
         KafkaStream<String, String> stream = consumerMap.get(topic).get(0);
         ConsumerIterator<String, String> it = stream.iterator();
+        long timeStart=System.currentTimeMillis() ;
+        
         while (it.hasNext())
         {
-        	//System.out.println(it.next().message());
-        	msglist.add(it.next().message().toString());
+        	
+        	long timeEnd = System.currentTimeMillis();
+        	if(timeEnd-timeStart>30000)
+        	{
+        		break;
+        	}
+        	String msg = it.next().message().toString();
+        	System.out.println(msg);
+        	msglist.add(msg);
         }
         	return msglist;
             

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<sript>
+<using xmlTag="prod-conn" module="com.alogic.xscript.kafka.KKProdConn"/>
+<using xmlTag="consumer-conn" module="com.alogic.xscript.kafka.KKConsConn"/>
+<prod-conn bootstrapServers="127.0.0.1:9092" 
+			acks="all"
+			retries="0"
+			batchSize="16384"
+			lingerMs="1"
+			bufferMemory="33554432"
+			keySerializer="org.apache.kafka.common.serialization.StringSerializer"
+			valueSerializer="org.apache.kafka.common.serialization.StringSerializer"
+			>
+	<send topic="test" key="1" value="hello"></send>
+</prod-conn>
+<consumer-conn zookeeperConnector="127.0.0.1:2181" 
+			   groupId="test" 
+			   sessionTimeoutMs="4000" 
+			   syncTimeMs="200"
+			   autoCommitIntervalMs="1000" 
+			   autoOffsetReset="smallest"
+			   serializerClass="kafka.serializer.StringEncoder"
+			   > 
+	<receive topic="test" thread="1">
+		
+	</receive>
+</consumer-conn>
+</sript>

@@ -25,10 +25,10 @@ public class KKProdConn extends Segment {
 	//broker消息确认的模式,默认为1
 	protected String acks = "1";
 	//发送失败时Producer端的重试次数，默认为0
-	protected int retries = 0;
-	protected int batchSize = 16384;
-	protected int lingerMs = 1;
-	protected int bufferMemory = 33554432;
+	protected String retries = "0";
+	protected String batchSize = "16384";
+	protected String lingerMs = "1";
+	protected String bufferMemory = "33554432";
 	protected String keySerializer = "org.apache.kafka.common.serialization.StringSerializer";
 	protected String valueSerializer = "org.apache.kafka.common.serialization.StringSerializer";
 
@@ -39,10 +39,10 @@ public class KKProdConn extends Segment {
 		cid = PropertiesConstants.getString(p,"cid",cid,true);
 		bootstrapServers = PropertiesConstants.getRaw(p, "bootstrapServers", bootstrapServers);
 		acks = PropertiesConstants.getRaw(p, "acks", acks);
-		retries = PropertiesConstants.getInt(p, "retries", retries);
-		batchSize = PropertiesConstants.getInt(p, "batchSize", batchSize);
-		lingerMs = PropertiesConstants.getInt(p, "lingerMs", lingerMs);
-		bufferMemory = PropertiesConstants.getInt(p, "bufferMemory", bufferMemory);
+		retries = PropertiesConstants.getString(p, "retries", retries);
+		batchSize = PropertiesConstants.getString(p, "batchSize", batchSize);
+		lingerMs = PropertiesConstants.getString(p, "lingerMs", lingerMs);
+		bufferMemory = PropertiesConstants.getString(p, "bufferMemory", bufferMemory);
 		keySerializer = PropertiesConstants.getRaw(p, "keySerializer", keySerializer);
 		valueSerializer = PropertiesConstants.getRaw(p, "valueSerializer", valueSerializer);
 	}

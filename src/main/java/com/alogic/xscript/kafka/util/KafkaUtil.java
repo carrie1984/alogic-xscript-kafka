@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ExecutionException;
+
 //log
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -13,6 +15,7 @@ import kafka.consumer.ConsumerConfig;
 import kafka.consumer.ConsumerIterator;
 import kafka.consumer.KafkaStream;
 import kafka.javaapi.consumer.ConsumerConnector;
+import kafka.javaapi.producer.Producer;
 import kafka.serializer.StringDecoder;
 import kafka.utils.VerifiableProperties;
 
@@ -40,11 +43,12 @@ public class KafkaUtil {
 		{
 			Properties props = new Properties();
 			props.put("bootstrap.servers", "localhost:9092");
-			props.put("acks", "all");
-			props.put("retries", 0);
-			props.put("batch.size", 16384);
-			props.put("linger.ms", 1);
-			props.put("buffer.memory", 33554432);
+			props.put("request.required.acks","-1");
+//			props.put("acks", "all");
+//			props.put("retries", 0);
+//			props.put("batch.size", 16384);
+//			props.put("linger.ms", 1);
+//			props.put("buffer.memory", 33554432);
 			props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 			props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 			
@@ -80,10 +84,19 @@ public class KafkaUtil {
 	public static void main(String[] args)
 	{
 		//consumer = getConsumer();
+
 		kProducer = getProducer();
-		
-		ProducerRecord<String, String> record = new ProducerRecord<String, String>("test", "1", "bbb");
-		kProducer.send(record);
+		System.out.println(kProducer.toString());
+		ProducerRecord<String, String> record = new ProducerRecord<String, String>("test", "1", "20161215 20:13");
+		try {
+			kProducer.send(record).get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 //		List<String> msglist = new ArrayList<>();
 //		Map<String, Integer> topicCountMap = new HashMap<String, Integer>();
 //        topicCountMap.put("test",1);

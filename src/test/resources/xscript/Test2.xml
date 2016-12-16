@@ -3,18 +3,7 @@
 <using xmlTag="admin-conn" module="com.alogic.xscript.kafka.admin.KKAdminConn" />
 
 <admin-conn zookeeperConnect="127.0.0.1:2181" sessionTimeoutMs="10000" connectionTimeoutMs="8000">	
-		<!-- 查看主题 -->
-	<list-topic tag="original"></list-topic>
-	<!-- 创建主题 -->
-    <create-topic topic="aaaaa" partition="2" replication="1" topicConfigpara="" topicConfignum=""></create-topic>
-	<!-- 查看增加后的主题列表 -->
-	<list-topic tag="aftercreate"></list-topic>
-	<!-- 删除主题 -->
-	<delete-topic topic="aaaaa" ></delete-topic>	
-	<!-- 查看删除后的主题列表 -->
-	<list-topic tag="afterdelete"></list-topic>	
-	<!-- 更改主题 -->
-    <alter-topic topic="aaaaa" param="6"></alter-topic>
+		
     <!-- 描述主题详情 -->
     <describe-topic topic="aaaaa"></describe-topic>
 

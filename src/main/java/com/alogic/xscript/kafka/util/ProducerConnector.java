@@ -30,10 +30,10 @@ public class ProducerConnector {
 	//broker消息确认的模式,默认为1
 	protected String acks = "1";
 	//发送失败时Producer端的重试次数，默认为0
-	protected int retries = 0;
-	protected int batchSize = 16384;
-	protected int lingerMs = 1;
-	protected int bufferMemory = 33554432;
+	protected String retries = "0";
+	protected String batchSize = "16384";
+	protected String lingerMs = "1";
+	protected String bufferMemory = "33554432";
 	protected String keySerializer = "org.apache.kafka.common.serialization.StringSerializer";
 	protected String valueSerializer = "org.apache.kafka.common.serialization.StringSerializer";
 	//连接的属性参数容器
@@ -48,10 +48,10 @@ public class ProducerConnector {
 	{
 		bootstrapServers = PropertiesConstants.getRaw(p, "bootstrapServers", bootstrapServers);
 		acks = PropertiesConstants.getRaw(p, "acks", acks);
-		retries = PropertiesConstants.getInt(p, "retries", retries);
-		batchSize = PropertiesConstants.getInt(p, "batchSize", batchSize);
-		lingerMs = PropertiesConstants.getInt(p, "lingerMs", lingerMs);
-		bufferMemory = PropertiesConstants.getInt(p, "bufferMemory", bufferMemory);
+		retries = PropertiesConstants.getString(p, "retries", retries);
+		batchSize = PropertiesConstants.getString(p, "batchSize", batchSize);
+		lingerMs = PropertiesConstants.getString(p, "lingerMs", lingerMs);
+		bufferMemory = PropertiesConstants.getString(p, "bufferMemory", bufferMemory);
 		keySerializer = PropertiesConstants.getRaw(p, "keySerializer", keySerializer);
 		valueSerializer = PropertiesConstants.getRaw(p, "valueSerializer", valueSerializer);
 		
@@ -67,8 +67,8 @@ public class ProducerConnector {
 		connect();
 	}
 	public ProducerConnector(Properties p,String bootstrapservers,
-			String ackss,int retriess,int batchsize,int lingerms,
-			int buffermemory,String keyserializer,String valueserializer
+			String ackss,String retriess,String batchsize,String lingerms,
+			String buffermemory,String keyserializer,String valueserializer
 			)
 	{
 		bootstrapServers = bootstrapservers;
@@ -98,6 +98,15 @@ public class ProducerConnector {
 	
 	public void connect()
 	{
+		System.err.println("bootstrap.servers  "+props.getProperty("bootstrap.servers"));
+		System.err.println("acks  "+props.getProperty("acks"));
+		System.err.println("retries  "+props.getProperty("retries"));
+		System.err.println("batch.size  "+props.getProperty("batch.size"));
+		System.err.println("linger.ms  "+props.getProperty("linger.ms"));
+		System.err.println("buffer.memory  "+props.getProperty("buffer.memory"));
+		System.err.println("key.serializer  "+props.getProperty("key.serializer"));
+		System.err.println("value.serializer  "+props.getProperty("value.serializer"));
+		
 		if(producer==null)
 		{
 			producer = new KafkaProducer<>(props);
@@ -151,6 +160,9 @@ public class ProducerConnector {
 		{
 			logger.error("the producer is not connected");
 		}
+		System.out.println("topic= "+topic);
+		System.out.println("key= "+key);
+		System.out.println("value= "+value);
 		
 
 		ProducerRecord<String, String> record = new ProducerRecord<String, String>(topic, key, value);
