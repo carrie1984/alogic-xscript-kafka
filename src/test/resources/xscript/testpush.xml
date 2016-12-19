@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
 <script>
-<using xmlTag="mq-pusher" module="com.alogic.xscript.kafka.KKPusher"/>
-<using xmlTag="mq-sender" module="com.alogic.xscript.kafka.KKSender"/>
-
+<using xmlTag="mq-kafka" module="com.alogic.xscript.kafka.MQKafka"/>
+<mq-kafka>
 <mq-pusher zookeeperConnector="127.0.0.1:2181" 
 			   groupId="test" 
 			   sessionTimeoutMs="4000" 
@@ -13,11 +12,12 @@
 	
 			   > 
 			   <!-- 接收消息 -->
-	<mq-push topic="test" thread="1" id="msg">
+	<mq-push topic="mykafka" thread="1" id="msg">
 				<!-- 调用子指令，对消息进行处理 -->
 				<get id="${msg}" value="${msg}"></get>
 			<mq-wait timeout="2000"/>
 		
 	</mq-push>
 </mq-pusher>
+</mq-kafka>
 </script>

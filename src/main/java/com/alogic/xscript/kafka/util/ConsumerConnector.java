@@ -147,6 +147,11 @@ public class ConsumerConnector {
 		connect();
 	}
 	
+	public kafka.javaapi.consumer.ConsumerConnector getPushConsumer()
+	{
+		return consumer;		
+	}
+	
 	/*
 	 * 消费者接受消息
 	 */

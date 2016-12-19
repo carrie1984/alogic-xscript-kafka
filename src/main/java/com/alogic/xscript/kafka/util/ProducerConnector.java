@@ -168,7 +168,7 @@ public class ProducerConnector {
 		ProducerRecord<String, String> record = new ProducerRecord<String, String>(topic, key, value);
 		Future<RecordMetadata> sendresult = producer.send(record);
 		
-		return String.valueOf(sendresult.isDone());
+		return String.valueOf(sendresult.toString());
 			
 	}	
 

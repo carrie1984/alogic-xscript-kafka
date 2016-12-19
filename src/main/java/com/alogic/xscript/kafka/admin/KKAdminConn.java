@@ -17,8 +17,8 @@ import com.anysoft.util.PropertiesConstants;
 
 public class KKAdminConn extends Segment{
 	
-	protected String cid = "$admin-conn";
-	protected String zookeeperConnect = "$server";
+	protected String cid = "$mq-admin";
+	protected String zookeeperConnect = "${server}";
 	protected int sessionTimeoutMs;
 	protected int connectionTimeoutMs;
 
@@ -27,9 +27,9 @@ public class KKAdminConn extends Segment{
 		super(tag, p);
 		registerModule("create-topic", KKCreateTopic.class);
 		registerModule("alter-topic", KKAlterTopic.class);
-		registerModule("delete-topic", KKDeleteTopic.class);
+		registerModule("del-topic", KKDeleteTopic.class);
 		registerModule("list-topic", KKListTopic.class);
-		registerModule("describe-topic", KKDescribeTopic.class);
+		registerModule("desc-topic", KKDescribeTopic.class);
 	}
 	@Override
 	public void configure(Properties p)

@@ -24,7 +24,7 @@ public KKAdminOperation(String tag, Logiclet p) {
 		// TODO Auto-generated constructor stub
 	}
 
-protected String pid = "$admin-conn";
+protected String pid = "$mq-admin";
 	
 	/**
 	 * 返回结果的id

@@ -7,7 +7,8 @@ import com.alogic.xscript.ExecuteWatcher;
 import com.alogic.xscript.Logiclet;
 import com.alogic.xscript.LogicletContext;
 import com.alogic.xscript.kafka.util.KKConnector;
-import com.google.gson.Gson;
+import com.anysoft.util.Properties;
+import com.anysoft.util.PropertiesConstants;
 
 
 public class KKListTopic extends KKAdminOperation{
@@ -18,20 +19,26 @@ public class KKListTopic extends KKAdminOperation{
 		super(tag, p);
 		// TODO Auto-generated constructor stub
 	}
+	@Override
+	public void configure(Properties p) 
+	{
+		super.configure(p);
+		tag = PropertiesConstants.getString(p, "tag", tag);
+	}
 
 	@Override
-	protected void onExecute(KKConnector row, Map<String, Object> root, Map<String, Object> current,
+	protected void onExecute(KKConnector row,Map<String, Object> root, Map<String, Object> current,
 			LogicletContext ctx, ExecuteWatcher watcher) {
 		// TODO Auto-generated method stub
 	//	Gson gson = new Gson();
 		
-		List<String> topiclist = row.ListTopic();
-		//得到列表后需要将他转换为json格式便于处理，此时的topiclist已经是可以输出的结果。
-		//需要将其转换为json格式更加方便
 		
+		List<String> topiclist = row.ListTopic();		//得到列表后需要将他转换为json格式便于处理，此时的topiclist已经是可以输出的结果。
+
 		root.put(tag, topiclist);
-		System.err.println(topiclist);
+		//System.err.println(topiclist);
 		
 	}
+
 
 }

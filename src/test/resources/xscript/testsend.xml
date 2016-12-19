@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<script>
+<using xmlTag="mq-kafka" module="com.alogic.xscript.kafka.MQKafka"/>
+
+<mq-kafka>
+<mq-sender bootstrapServers="127.0.0.1:9092" 
+			acks="all"
+			retries="0"
+			batchSize="16384"
+			lingerMs="1"
+			bufferMemory="33554432"
+			keySerializer="org.apache.kafka.common.serialization.StringSerializer"
+			valueSerializer="org.apache.kafka.common.serialization.StringSerializer"
+			>
+	<mq-send topic="mykafka" key="1" value="1713h1"></mq-send>
+	<mq-send topic="mykafka" key="1" value="1713h2"></mq-send>
+	<mq-send topic="mykafka" key="1" value="1713h3"></mq-send>
+	<mq-send topic="mykafka" key="1" value="1713h4"></mq-send>
+	
+</mq-sender>
+</mq-kafka>
+</script>

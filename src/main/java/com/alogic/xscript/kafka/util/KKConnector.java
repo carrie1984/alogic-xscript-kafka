@@ -128,92 +128,73 @@ public class KKConnector {
 		return topiclist;
 	}
 	
-	//查看topic详细信息
+	//查看topic详细信息，此方法暂不使用，实际调用的是util中的TopicInfo类中的方法
 	//初始设定需要输出的参数值,参数需要进行初始化，否则会出现空指针异常报错
 	public HashMap<String, Object>  describeTopic(String topicName)
 	{
 		 int partitionCount = 0;
 		 int ReplicationFactor = 0;
 		 java.util.Properties config = new java.util.Properties();
-		 List<Integer> partitionList = new ArrayList<>();
-		 List<Seq<Object>> replicasList = new ArrayList<>();
-		 List<Integer> leaderList = new ArrayList<>();
-		 List<List<Object>> AllIsrList = new ArrayList<>();
-
-		scala.collection.Seq<String> allTopics = zkUtils.getAllTopics();
-		scala.collection.immutable.List<String> list = allTopics.toList();
-
-		Map<String, Seq<Object>> PartitionsForTopics = zkUtils.getPartitionsForTopics(allTopics);
-		Seq<Object> partitionNum = PartitionsForTopics.apply(topicName);
-		partitionCount = partitionNum.size();//第一行总和第一项=====================
-		
-		
-		Map<String, Map<Object, Seq<Object>>> replicaTopics = zkUtils.getPartitionAssignmentForTopics(allTopics);
-		Map<Object, Seq<Object>> PartitionAssignment = replicaTopics.apply(topicName);
-		//TopicAndPartition topicAndPartition = new TopicAndPartition(topicName, PartitionCount);
-		ReplicationFactor = PartitionAssignment.size();
-		//System.out.println(info);				
-		System.out.println("ReplicationFactor===="+ReplicationFactor);
-		
-		Map<String, java.util.Properties> topicsConfig = AdminUtils.fetchAllTopicConfigs(zkUtils);
-		config = topicsConfig.apply(topicName);
-		//Properties topicConfig = AdminUtils.fetchEntityConfig(zkUtils, topicName, topicName);
-		boolean flag = config.isEmpty();
-		System.out.println(config.size());
-		System.out.println("configs=========="+config.toString());
-		
-		
-		
-		List<Object> IsrList = new ArrayList<Object>();
-		System.out.println("partitionNum "+partitionCount);
-		for(int i=0;i<partitionCount;++i)
-		{
-			Object temp = partitionNum.apply(0).toString();	
-			int num = Integer.parseInt(temp.toString());
-			partitionList.add(i, i);
-			System.out.println("partition "+i+" ");//第二行第一项
-			Option<LeaderAndIsr> leaderIsr = zkUtils.getLeaderAndIsrForPartition(topicName, num);
-			Seq<Object> SyncReplicas = zkUtils.getInSyncReplicasForPartition(topicName, num);
-			replicasList.add(i, SyncReplicas);
-			System.out.println("======Replics===========");
-			for(int k=0;k<SyncReplicas.length();++k)
+		 
+		 List<HashMap<String, Object>> partitionDetail = new ArrayList<>();
+		 HashMap<String, Object> AllInfo = new HashMap<>();
+			
+			scala.collection.Seq<String> allTopics = zkUtils.getAllTopics();
+			Map<String, Seq<Object>> PartitionsForTopics = zkUtils.getPartitionsForTopics(allTopics);
+			Seq<Object> partitionNum = PartitionsForTopics.apply(topicName);
+			partitionCount = partitionNum.size();
+			
+			Map<String, Map<Object, Seq<Object>>> replicaTopics = zkUtils.getPartitionAssignmentForTopics(allTopics);
+			Map<Object, Seq<Object>> PartitionAssignment = replicaTopics.apply(topicName);
+			//TopicAndPartition topicAndPartition = new TopicAndPartition(topicName, PartitionCount);
+			ReplicationFactor = PartitionAssignment.head()._2.size();
+			
+			Map<String, java.util.Properties> topicsConfig = AdminUtils.fetchAllTopicConfigs(zkUtils);
+			config = topicsConfig.apply(topicName);
+			
+			for(int i=0;i<partitionCount;++i)
 			{
-				System.out.print(SyncReplicas.apply(k)+" ");
-				System.out.println("");
+				HashMap<String, Object> perPartition = new HashMap<>();			
+				perPartition.put("partition", i);
+				
+				
+				Option<LeaderAndIsr> leaderIsr = zkUtils.getLeaderAndIsrForPartition(topicName, i);
+				Seq<Object> SyncReplicas = zkUtils.getInSyncReplicasForPartition(topicName, i);
+				List<Object> repList = new ArrayList<>();
+				for(int k=0;k<SyncReplicas.length();++k)
+				{
+					repList.add(SyncReplicas.apply(k));
+				}
+				perPartition.put("SyncReplicas",repList );
+				
+				
+				List<Object> IsrList = new ArrayList<Object>();
+				scala.collection.immutable.List<Object> Isr = leaderIsr.get().isr();	    
+				int IsrNum = Isr.size();
+			    for(int j=0;j<IsrNum;++j)
+			    {
+			    	IsrList.add(Isr.apply(j));
+			    }
+			    perPartition.put("IsrList", IsrList);
+			    
+			    
+			    int Leader = leaderIsr.get().leader();
+			    perPartition.put("Leader", Leader);
+
+			    
+			    partitionDetail.add(perPartition);
+			    
 			}
-			//System.out.println(SyncReplicas.length());
-			scala.collection.immutable.List<Object> Isr = leaderIsr.get().isr();
-		    int IsrNum = Isr.size();
-		    System.out.println("======Isr=============");
-		    for(int j=0;j<IsrNum;++j)
-		    {
-		    	IsrList.add(Isr.apply(j));
-		    	System.out.println(IsrList.get(j));
-		    }
-		    
-		    AllIsrList.add(i, IsrList);
-		    int Leader = leaderIsr.get().leader();
-		    leaderList.add(i, Leader);
-  	    System.out.println("======Leader=============");
-		    System.out.println(Leader);
-		    
-		}
-		HashMap<String, Object> AllInfo = new HashMap<>();
-		
-		HashMap<String, Object> hashsum = new HashMap<>(); 
-		hashsum.put("partitionCount", partitionCount);
-		hashsum.put("ReplicationFactor", ReplicationFactor);
-		hashsum.put("config", config);
-		AllInfo.put("sum",hashsum);
-		
-		HashMap<String, Object> hashdetail = new HashMap<>();
-		hashdetail.put("Partition", partitionList);
-		hashdetail.put("Leader", leaderList);
-		hashdetail.put("ReplicasList", replicasList);
-		hashdetail.put("Isr", AllIsrList);
-		AllInfo.put("detail", hashdetail);
-		
-		return AllInfo;
+			
+			HashMap<String, Object> hashsum = new HashMap<>(); 
+			hashsum.put("partitionCount", partitionCount);
+			hashsum.put("ReplicationFactor", ReplicationFactor);
+			hashsum.put("config", config);
+			AllInfo.put("sum",hashsum);
+			AllInfo.put("detail", partitionDetail);
+			
+			return AllInfo;
+
 		
 	}
 	
@@ -227,6 +208,7 @@ public class KKConnector {
 		    else
 		    {
 		    	AdminUtils.deleteTopic(zkUtils, topicName);
+		    	
 		    	System.out.println(topicName+" is deleted successfully!");
 		    }
 	}
