@@ -12,10 +12,10 @@
 			keySerializer="org.apache.kafka.common.serialization.StringSerializer"
 			valueSerializer="org.apache.kafka.common.serialization.StringSerializer"
 			>
-	<mq-send topic="mykafka" key="1" value="1713h1"></mq-send>
-	<mq-send topic="mykafka" key="1" value="1713h2"></mq-send>
-	<mq-send topic="mykafka" key="1" value="1713h3"></mq-send>
-	<mq-send topic="mykafka" key="1" value="1713h4"></mq-send>
+	<mq-send topic="mykafka" key="1" value="1711h1"></mq-send>
+	<mq-send topic="mykafka" key="1" value="1711h2"></mq-send>
+	<mq-send topic="mykafka" key="1" value="1711h3"></mq-send>
+	<mq-send topic="mykafka" key="1" value="1711h4"></mq-send>
 	
 </mq-sender>
 </mq-kafka>

@@ -1,21 +1,16 @@
 <?xml version="1.0"?>
 <script>
-<using xmlTag="prod-conn" module="com.alogic.xscript.kafka.KKProdConn" />
-<using xmlTag="consumer-conn" module="com.alogic.xscript.kafka.KKConsConn" />
-
-<consumer-conn zookeeperConnector="127.0.0.1:2181" 
-			   groupId="test" 
-			   sessionTimeoutMs="4000" 
-			   syncTimeMs="200"
-			   autoCommitIntervalMs="1000" 
-			   autoOffsetReset="smallest"
-			   serializerClass="kafka.serializer.StringEncoder"
-			   > 
-	<receive topic="test" thread="1">
-		
-	</receive>
-</consumer-conn>
-
-
+<using xmlTag="mq-kafka" module="com.alogic.xscript.kafka.MQKafka" />
+<mq-kafka>
+<mq-admin zookeeperConnect="127.0.0.1:2181" sessionTimeoutMs="10000" connectionTimeoutMs="8000">	
+	
+	<!-- 删除topic -->
+	<del-topic topic="test1219">
+	</del-topic>
+	<!-- 列出topic -->
+	<list-topic tag="afterdelete">
+	</list-topic>
+	
+</mq-admin>
+</mq-kafka>
 </script>
-
