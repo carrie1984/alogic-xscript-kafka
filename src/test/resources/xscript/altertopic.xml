@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <script>
-<using xmlTag="mq-admin" module="com.alogic.xscript.kafka.admin.KKAdminConn" />
-
+<using xmlTag="mq-kafka" module="com.alogic.xscript.kafka.MQKafka" />
+<mq-kafka>
 <mq-admin zookeeperConnect="127.0.0.1:2181" sessionTimeoutMs="10000" connectionTimeoutMs="8000">	
 	<!-- 修改topic -->
 	<alter-topic topic="test1219" param="3">
 	</alter-topic>
 </mq-admin>
-
+</mq-kafka>
 </script>

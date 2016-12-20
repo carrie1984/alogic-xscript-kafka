@@ -32,7 +32,7 @@ public class KKConnector {
 	/*
 	 * kafka的连接参数
 	 */
-	protected String zookeeperConnect = "$server";
+	protected String zookeeperConnect = "$zookeeperConnect";
 	protected int sessionTimeoutMs;
 	protected int connectionTimeoutMs;
 	

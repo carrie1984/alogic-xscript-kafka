@@ -1,4 +1,28 @@
-<?xml version="1.0"?>
+mq-send
+=======
+
+mq-send用于发送消息。
+
+### 实现类
+
+com.alogic.xscript.kafka.KKSend
+
+### 配置参数
+
+支持下列参数：
+
+| 编号 | 代码 | 说明 |
+| ---- | ---- | ---- |
+| 1 | pid | 父节点的元素名称，默认为$mq-sender |
+| 2 | topic | 发送消息的主题 |
+| 3 | key | 消息的key，同时也会作为partition的key  |
+| 4 | value | 发送消息的内容 |
+
+### 案例
+
+```
+
+	<?xml version="1.0"?>
 <script>
 <using xmlTag="mq-kafka" module="com.alogic.xscript.kafka.MQKafka"/>
 
@@ -20,3 +44,5 @@
 </mq-sender>
 </mq-kafka>
 </script>
+
+```

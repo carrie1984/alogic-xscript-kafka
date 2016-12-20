@@ -18,7 +18,7 @@ import com.anysoft.util.PropertiesConstants;
 public class KKAdminConn extends Segment{
 	
 	protected String cid = "$mq-admin";
-	protected String zookeeperConnect = "${server}";
+	protected String zookeeperConnect = "${zookeeperConnect}";
 	protected int sessionTimeoutMs;
 	protected int connectionTimeoutMs;
 

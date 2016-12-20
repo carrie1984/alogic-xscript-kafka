@@ -21,7 +21,7 @@ public class KKSender extends Segment {
 	 * producer的连接参数
 	 */
 	//Kafka集群连接串，可以由多个host:port组成
-	protected String bootstrapServers = "$bootstrapServrrs";
+	protected String bootstrapServers = "$bootstrapServers";
 	//broker消息确认的模式,默认为1
 	protected String acks = "1";
 	//发送失败时Producer端的重试次数，默认为0
