@@ -10,7 +10,6 @@ import com.alogic.xscript.ExecuteWatcher;
 import com.alogic.xscript.Logiclet;
 import com.alogic.xscript.LogicletContext;
 import com.alogic.xscript.kafka.util.ConsumerConnector;
-import com.alogic.xscript.kafka.util.ProducerConnector;
 import com.alogic.xscript.plugins.Segment;
 import com.anysoft.util.Properties;
 import com.anysoft.util.PropertiesConstants;
@@ -34,6 +33,7 @@ public class KKPush extends Segment{
 	protected int thread = 1;
 	protected String topic = "test";
 	protected String tag = "data";
+	protected long waittime = 2000;
 	
 	
 	// onExecute函数的参数
@@ -54,6 +54,7 @@ public class KKPush extends Segment{
 		id = PropertiesConstants.getString(p,"id", "$" + getXmlTag());
 		thread = PropertiesConstants.getInt(p, "thread",thread);
 		topic = PropertiesConstants.getRaw(p, "topic", topic);
+		waittime = PropertiesConstants.getLong(p, "waittime", waittime);
 	}
 	
 	@Override
@@ -66,11 +67,12 @@ public class KKPush extends Segment{
 		ctxPara = ctx;
 		watcherPara = watcher;
 		
-		recvPushMsg(conn,topic, thread);
+		recvPushMsg(conn,topic, thread,waittime);
 	}
 	
-	public void recvPushMsg(ConsumerConnector conn,String topic,int thread)
+	public void recvPushMsg(ConsumerConnector conn,String topic,int thread,long waittime)
 	{
+	
 		kafka.javaapi.consumer.ConsumerConnector consumer = conn.getPushConsumer();
 		Map<String, Integer> topicCountMap = new HashMap<String, Integer>();
         topicCountMap.put(topic, thread);
@@ -83,7 +85,8 @@ public class KKPush extends Segment{
         KafkaStream<String, String> stream = consumerMap.get(topic).get(0);
         ConsumerIterator<String, String> it = stream.iterator();
 
-        while (it.hasNext())
+        long begintime = System.currentTimeMillis();
+        while (((System.currentTimeMillis()-begintime)<=waittime)&&it.hasNext())
         {
         	
         	String msg = it.next().message().toString();

@@ -54,11 +54,11 @@ com.alogic.xscript.kafka.KKPusher
 	
 			   > 
 			   <!-- 接收消息 -->
-	<mq-push topic="mykafka" thread="1" id="msg">
+	<mq-push topic="mykafka" thread="1" id="msg" waittime="2000">
 				<!-- 调用子指令，对消息进行处理 -->
 				<get id="${msg}" value="${msg}"></get>
 	</mq-push>
-	<mq-wait timeout="2000"/>
+	
 </mq-pusher>
 </mq-kafka>
 </script>

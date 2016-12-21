@@ -135,7 +135,7 @@ public class ConsumerConnector {
 	 */
 	public void disconnect()
 	{
-		
+		System.err.println("======consumer is shut down===========");
 			consumer.shutdown();
 		
 	}

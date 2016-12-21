@@ -17,6 +17,7 @@ com.alogic.xscript.kafka.KKPush
 | 2 | id | 当前元素的id |
 | 3 | topic | push模式接收消息的主题 |
 | 4 | thread | 接收消息的线程数目  |
+| 5 | waittime | 本次接收消息的等待时间 |
 
 ### 案例
 
@@ -36,11 +37,11 @@ com.alogic.xscript.kafka.KKPush
 	
 			   > 
 			   <!-- 接收消息 -->
-	<mq-push topic="mykafka" thread="1" id="msg">
+	<mq-push topic="mykafka" thread="1" id="msg" waittime="2000">
 				<!-- 调用子指令，对消息进行处理 -->
 				<get id="${msg}" value="${msg}"></get>
 	</mq-push>
-	<mq-wait timeout="2000"/>
+	
 </mq-pusher>
 </mq-kafka>
 </script>

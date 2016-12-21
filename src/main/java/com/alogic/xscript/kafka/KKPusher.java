@@ -7,7 +7,6 @@ import com.alogic.xscript.Logiclet;
 import com.alogic.xscript.LogicletContext;
 import com.alogic.xscript.kafka.util.ConsumerConnector;
 import com.alogic.xscript.plugins.Segment;
-import com.alogic.xscript.plugins.Sleep;
 import com.anysoft.util.Properties;
 import com.anysoft.util.PropertiesConstants;
 
@@ -17,7 +16,6 @@ public class KKPusher extends Segment{
 		super(tag, p);
 		// TODO Auto-generated constructor stub
 		registerModule("mq-push", KKPush.class);
-		registerModule("mq-wait", Sleep.class);
 	}
 	protected String cid = "$mq-pusher";
 	/*
@@ -55,8 +53,10 @@ public class KKPusher extends Segment{
 		ConsumerConnector conn = new ConsumerConnector(ctx, zookeeperConnector, groupId, syncTimeMs, sessionTimeoutMs,autoCommitIntervalMs, autoOffsetReset, serializerClass);
 		try {
 			ctx.setObject(cid, conn);
+			System.out.println("==============consumer is begin=================");
 			super.onExecute(root, current, ctx, watcher);
 		}finally{
+			System.err.println("consumer will be removed=================");
 			ctx.removeObject(cid);
 			conn.disconnect();
 		}
