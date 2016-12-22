@@ -10,6 +10,7 @@ import com.alogic.xscript.plugins.Segment;
 import com.anysoft.util.Properties;
 import com.anysoft.util.PropertiesConstants;
 
+
 public class KKSender extends Segment {
 	public KKSender(String tag, Logiclet p) {
 		super(tag, p);

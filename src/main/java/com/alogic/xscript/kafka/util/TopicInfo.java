@@ -10,13 +10,18 @@ import kafka.utils.ZkUtils;
 import scala.Option;
 import scala.collection.Map;
 import scala.collection.Seq;
-
+/*
+ * topic详细信息类，用于描述
+ * topic的各项信息
+ * @author cuijialing
+ */
 public class TopicInfo {
 	 protected  int partitionCount;
 	 protected int ReplicationFactor;
 	 protected java.util.Properties config;
 	 
 	 protected List<HashMap<String, Object>> partitionDetail;
+	 
 	 public TopicInfo()
 	 {
 		 partitionCount = 0;
@@ -24,10 +29,11 @@ public class TopicInfo {
 		 config = new java.util.Properties();
 		 partitionDetail = new ArrayList<>();
 	 }
+	 
 	 public HashMap<String, Object> getTopicInfo(KKConnector conn,String topicName)
 	 {
 		HashMap<String, Object> AllInfo = new HashMap<>();
-		ZkUtils zkUtils = KKConnector.zkUtils;
+		ZkUtils zkUtils = conn.zkUtils;
 		
 		scala.collection.Seq<String> allTopics = zkUtils.getAllTopics();
 		Map<String, Seq<Object>> PartitionsForTopics = zkUtils.getPartitionsForTopics(allTopics);

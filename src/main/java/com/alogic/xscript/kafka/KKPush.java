@@ -1,7 +1,5 @@
 package com.alogic.xscript.kafka;
 
-import java.net.ConnectException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,6 +68,9 @@ public class KKPush extends Segment{
 		recvPushMsg(conn,topic, thread,waittime);
 	}
 	
+	/*
+	 * 消费者使用push方法接收消息
+	 */
 	public void recvPushMsg(ConsumerConnector conn,String topic,int thread,long waittime)
 	{
 	

@@ -34,7 +34,6 @@ public class KKDeleteTopic extends KKAdminOperation{
 			LogicletContext ctx, ExecuteWatcher watcher) {
 		// TODO Auto-generated method stub
 		row.deleteTopic(topic);
-		System.err.println(topic+" is delete");
 		
 	}
 	

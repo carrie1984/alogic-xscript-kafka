@@ -22,7 +22,8 @@ import scala.Option;
 import scala.collection.Map;
 import scala.collection.Seq;
 /*
- * 20161209 cuijialing create
+ * kafka对topic进行管理时需要的连接类
+ * @author cuijialing
  */
 public class KKConnector {
 	/*
@@ -36,7 +37,7 @@ public class KKConnector {
 	protected int sessionTimeoutMs;
 	protected int connectionTimeoutMs;
 	
-	public static ZkUtils zkUtils;
+	public  ZkUtils zkUtils;
 	public ZkClient zkClient;
 	public boolean isSecureKafkaCluster = false;
 	public KKConnector(Properties props)
@@ -63,10 +64,16 @@ public class KKConnector {
 			        ZKStringSerializer$.MODULE$); 
 		connect();
      }
+	/*
+	 * 连接zookeeper
+	 */
 	public void connect()
 	{
 		 zkUtils = new ZkUtils(zkClient, new ZkConnection(zookeeperConnect), isSecureKafkaCluster);
 	}
+	/*
+	 * 断开zookeeper
+	 */
 	public void disconnect()
 	{
 		zkUtils.close();
@@ -115,7 +122,7 @@ public class KKConnector {
 	    	TopicCommand.main(optionsAddPartitions); 
 	}
 	//查看所有topic列表信息
-	public static List<String> ListTopic()
+	public  List<String> ListTopic()
 	{
 		scala.collection.Seq<String> allTopics = zkUtils.getAllTopics();
 		scala.collection.immutable.List<String> list = allTopics.toList();
@@ -129,7 +136,7 @@ public class KKConnector {
 	}
 	
 	//查看topic详细信息，此方法暂不使用，实际调用的是util中的TopicInfo类中的方法
-	//初始设定需要输出的参数值,参数需要进行初始化，否则会出现空指针异常报错
+	//
 	public HashMap<String, Object>  describeTopic(String topicName)
 	{
 		 int partitionCount = 0;
@@ -194,8 +201,6 @@ public class KKConnector {
 			AllInfo.put("detail", partitionDetail);
 			
 			return AllInfo;
-
-		
 	}
 	
 	//删除topic

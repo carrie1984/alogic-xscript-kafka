@@ -13,6 +13,7 @@ import com.anysoft.util.PropertiesConstants;
 
 /*
  * kafka的生产者连接类
+ * @author cuijialing
  */
 public class ProducerConnector {
 	
@@ -160,9 +161,6 @@ public class ProducerConnector {
 		{
 			logger.error("the producer is not connected");
 		}
-		System.out.println("topic= "+topic);
-		System.out.println("key= "+key);
-		System.out.println("value= "+value);
 		
 
 		ProducerRecord<String, String> record = new ProducerRecord<String, String>(topic, key, value);

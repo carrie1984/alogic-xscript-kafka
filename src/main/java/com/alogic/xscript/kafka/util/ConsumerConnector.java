@@ -1,10 +1,5 @@
 package com.alogic.xscript.kafka.util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -12,14 +7,13 @@ import com.anysoft.util.Properties;
 import com.anysoft.util.PropertiesConstants;
 
 import kafka.consumer.ConsumerConfig;
-import kafka.consumer.ConsumerIterator;
-import kafka.consumer.KafkaStream;
-import kafka.serializer.StringDecoder;
-import kafka.utils.VerifiableProperties;
 
 
 /*
- * kafka的消费者连接类
+ * kafka实现push模式的消费者连接类
+ * 本方法适用于设置waittime时间来实时接收
+ * 生产者发送的消息
+ * @author cuijialing
  */
 public class ConsumerConnector {
 	/*
@@ -83,15 +77,6 @@ public class ConsumerConnector {
 		autoOffsetReset = autooffsetreset;
 		serializerClass = serializerclass;
 		
-		
-		System.err.println("zookeeperConnector "+zookeeperConnector);
-		System.err.println("groupId "+groupId);
-		System.err.println("syncTimeMs "+syncTimeMs);
-		System.err.println("sessionTimeoutMs "+sessionTimeoutMs);
-		System.err.println("autoCommitIntervalMs "+autoCommitIntervalMs);
-		System.err.println("autoOffsetReset "+autoOffsetReset);
-		System.err.println("serializerClass "+serializerClass);
-		
 		props.put("zookeeper.connect", zookeeperConnector);
 		props.put("group.id", groupId);
 		props.put("zookeeper.session.timeout.ms", sessionTimeoutMs);
@@ -110,14 +95,7 @@ public class ConsumerConnector {
 	 */
 	public void connect()
 	{
-		System.err.println("zookeeperConnector "+props.getProperty("zookeeper.connect"));
-		System.err.println("groupId "+props.getProperty("group.id"));
-		System.err.println("syncTimeMs "+props.getProperty("zookeeper.session.timeout.ms"));
-		System.err.println("sessionTimeoutMs "+props.getProperty("zookeeper.sync.time.ms"));
-		System.err.println("autoCommitIntervalMs "+props.getProperty("auto.commit.interval.ms"));
-		System.err.println("autoOffsetReset "+props.getProperty("auto.offset.reset"));
-		System.err.println("serializerClass "+props.getProperty("serializer.class"));
-		
+	
 		ConsumerConfig config = new ConsumerConfig(props);
         consumer = kafka.consumer.Consumer.createJavaConsumerConnector(config);
 //        try {
@@ -135,7 +113,7 @@ public class ConsumerConnector {
 	 */
 	public void disconnect()
 	{
-		System.err.println("======consumer is shut down===========");
+
 			consumer.shutdown();
 		
 	}
@@ -153,74 +131,7 @@ public class ConsumerConnector {
 	}
 	
 	/*
-	 * 消费者接受消息
+	 * 消费者使用push模式接受消息的方法在KKPush中实现
 	 */
 	
-	public List<String> recvMsg(String topic,int thread)
-	{
-		
-		List<String> msglist = new ArrayList<>();
-		Map<String, Integer> topicCountMap = new HashMap<String, Integer>();
-        topicCountMap.put(topic, thread);
-
-        StringDecoder keyDecoder = new StringDecoder(new VerifiableProperties());
-        StringDecoder valueDecoder = new StringDecoder(new VerifiableProperties());
-
-        Map<String, List<KafkaStream<String, String>>> consumerMap = 
-                consumer.createMessageStreams(topicCountMap,keyDecoder,valueDecoder);
-        KafkaStream<String, String> stream = consumerMap.get(topic).get(0);
-        ConsumerIterator<String, String> it = stream.iterator();
-        long timeStart=System.currentTimeMillis() ;
-        int i=0;
-        while (it.hasNext())
-        {
-        	String msg = it.next().message().toString();
-        	System.out.println(msg);
-        	msglist.add(msg);
-        	i++;
-        	if(i>=2)
-        	{
-        		break;
-        	}
-        		
-        	//long timeEnd = System.currentTimeMillis();
-        	//if(timeEnd-timeStart>30000)
-        	//{
-        	//	break;
-        	//}
-        }
-        
-        	//consumer.shutdown();
-           
-        	return msglist;
-        	
-            
-        
-		
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 }

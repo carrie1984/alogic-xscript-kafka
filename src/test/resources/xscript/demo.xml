@@ -9,10 +9,10 @@
 			keySerializer="org.apache.kafka.common.serialization.StringSerializer"
 			valueSerializer="org.apache.kafka.common.serialization.StringSerializer">
 			<!-- 发送消息 -->
-			<mq-send topic="mykafka" key="1" value="hello"></mq-send>
-			<mq-send topic="mykafka" key="1" value="hihi"></mq-send>
-			<mq-send topic="mykafka" key="1" value="hohoho"></mq-send>
-			<mq-send topic="mykafka" key="1" value="heyhey"></mq-send>
+			<mq-send topic="yelai" key="1" value="hello"></mq-send>
+			<mq-send topic="yelai" key="1" value="hihi"></mq-send>
+			<mq-send topic="yelai" key="1" value="hohoho"></mq-send>
+			<mq-send topic="yelai" key="1" value="heyhey"></mq-send>
 
 		</mq-sender>
 
@@ -23,7 +23,7 @@
 			keyDeserializer="org.apache.kafka.common.serialization.StringDeserializer"
 			valueDeserializer="org.apache.kafka.common.serialization.StringDeserializer">
 			<!-- 接收消息 -->
-			<mq-pull id="msg" topic="mykafka" pollTimeMs="100">
+			<mq-pull id="msg" topic="yelai" pollTimeMs="100">
 				<!-- 调用子指令，对消息进行处理 -->
 				<get id="${msg}" value="${msg}"></get>
 			</mq-pull>
@@ -35,7 +35,7 @@
 			sessionTimeoutMs="4000" syncTimeMs="200" autoCommitIntervalMs="1000"
 			autoOffsetReset="smallest" serializerClass="kafka.serializer.StringEncoder">
 			<!-- 接收消息 -->
-			<mq-push topic="mykafka" thread="1" id="msg" waittime="2000">
+			<mq-push topic="yelai" thread="1" id="msg" waittime="2">
 				<!-- 调用子指令，对消息进行处理 -->
 				<get id="${msg}" value="${msg}"></get>
 			</mq-push>

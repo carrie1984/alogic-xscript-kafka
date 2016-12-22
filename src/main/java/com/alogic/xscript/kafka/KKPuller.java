@@ -52,7 +52,7 @@ public class KKPuller extends Segment{
 	protected void onExecute(Map<String, Object> root,
 			Map<String, Object> current, LogicletContext ctx, ExecuteWatcher watcher) 
 	{
-		System.out.println("==========consumer================");
+		
 		ConsuPullConn conn = new ConsuPullConn(ctx, bootstrapServer, groupId, enableAutoCommit, autoCommitIntervalMs, keyDeserializer, valueDeserializer);
 		try {
 			ctx.setObject(cid, conn);

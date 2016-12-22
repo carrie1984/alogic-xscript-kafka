@@ -51,7 +51,7 @@ public class KKCreateTopic extends KKAdminOperation{
 	    //topicConfig.setProperty(topicConfigpara, topicConfignum);
 
 	    row.createTopic(topic,partition,replication,topicConfig);
-	    System.err.println(topic+" is create");
+	    
 	}
 
 }

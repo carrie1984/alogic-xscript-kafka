@@ -9,7 +9,9 @@ import com.alogic.xscript.kafka.util.ConsumerConnector;
 import com.alogic.xscript.plugins.Segment;
 import com.anysoft.util.Properties;
 import com.anysoft.util.PropertiesConstants;
-
+/*
+ * push模式的消费者实时从生产者获取消息
+ */
 public class KKPusher extends Segment{
 
 	public KKPusher(String tag, Logiclet p) {
@@ -49,14 +51,11 @@ public class KKPusher extends Segment{
 	protected void onExecute(Map<String, Object> root,
 			Map<String, Object> current, LogicletContext ctx, ExecuteWatcher watcher) 
 	{
-		System.out.println("==========consumer================");
 		ConsumerConnector conn = new ConsumerConnector(ctx, zookeeperConnector, groupId, syncTimeMs, sessionTimeoutMs,autoCommitIntervalMs, autoOffsetReset, serializerClass);
 		try {
-			ctx.setObject(cid, conn);
-			System.out.println("==============consumer is begin=================");
+			ctx.setObject(cid, conn);;
 			super.onExecute(root, current, ctx, watcher);
 		}finally{
-			System.err.println("consumer will be removed=================");
 			ctx.removeObject(cid);
 			conn.disconnect();
 		}

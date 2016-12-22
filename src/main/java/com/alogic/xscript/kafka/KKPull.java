@@ -45,12 +45,10 @@ public class KKPull extends Segment{
 			Map<String, Object> current, LogicletContext ctx,
 			ExecuteWatcher watcher) {
 		ConsuPullConn consumer = ctx.getObject(pid);
-		//============================
 		
-        //===========================================================================
 		List<String> result = new ArrayList<>();
 		result = consumer.recvMsg(topic, pollTimeMs);
-		System.err.println("======pull==============");
+		
 		root.put(tag, result);
 		if (result.size() > 0){
 			for (String value:result){

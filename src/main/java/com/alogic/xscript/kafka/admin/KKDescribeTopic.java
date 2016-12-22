@@ -12,7 +12,10 @@ import com.alogic.xscript.kafka.util.TopicInfo;
 import com.anysoft.util.Properties;
 import com.anysoft.util.PropertiesConstants;
 import com.google.gson.Gson;
-
+/*
+ * 描述topic详细信息
+ * @author cuijialing
+ */
 public class KKDescribeTopic extends KKAdminOperation{
 	
 	protected String topic = "";
@@ -28,7 +31,6 @@ public class KKDescribeTopic extends KKAdminOperation{
 		super.configure(p);
 		topic = PropertiesConstants.getRaw(p, "topic", topic);
 		tag = PropertiesConstants.getString(p, "tag", tag);
-		System.out.println(topic+"=============");
 	}
 
 	@Override

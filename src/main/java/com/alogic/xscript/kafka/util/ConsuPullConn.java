@@ -19,6 +19,7 @@ import com.anysoft.util.PropertiesConstants;
  * 注意本方法适用于打开生产者传数据，然后关闭生产者
  * 再启动消费者将之前的数据拉下
  * 需要设置polltimems
+ * @author cuijialing
  */
 
 public class ConsuPullConn {
@@ -99,7 +100,7 @@ public class ConsuPullConn {
 		connect();
 	}
 	/*
-	 * 消费者接收消息
+	 * 消费者使用pull方式接收消息
 	 */
 	public List<String> recvMsg(String topic,int polltime)
 	{
@@ -109,7 +110,7 @@ public class ConsuPullConn {
 		int index = 0;
         for (ConsumerRecord<String, String> record : records)
         {
-        	System.out.printf("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value());
+        	//System.out.printf("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value());
         	msglist.add(index, record.value());
         	index++;
         }
