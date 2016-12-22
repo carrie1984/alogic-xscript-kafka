@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<script>
+	<using xmlTag="mq-kafka" module="com.alogic.xscript.kafka.MQKafka" />
+
+	<mq-kafka>
+		<!-- 连接生产者 -->
+		<mq-sender bootstrapServers="127.0.0.1:9092" acks="all"
+			retries="0" batchSize="16384" lingerMs="0" bufferMemory="33554432"
+			keySerializer="org.apache.kafka.common.serialization.StringSerializer"
+			valueSerializer="org.apache.kafka.common.serialization.StringSerializer">
+			<!-- 发送消息 -->
+			<mq-send topic="mykafka" key="1" value="hello"></mq-send>
+			<mq-send topic="mykafka" key="1" value="hihi"></mq-send>
+			<mq-send topic="mykafka" key="1" value="hohoho"></mq-send>
+			<mq-send topic="mykafka" key="1" value="heyhey"></mq-send>
+
+		</mq-sender>
+
+
+		<!-- 连接pull消费者 -->
+		<mq-puller bootstrapServer="localhost:9092" groupId="test"
+			enableAutoCommit="true" autoCommitIntervalMs="1000"
+			keyDeserializer="org.apache.kafka.common.serialization.StringDeserializer"
+			valueDeserializer="org.apache.kafka.common.serialization.StringDeserializer">
+			<!-- 接收消息 -->
+			<mq-pull id="msg" topic="mykafka" pollTimeMs="100">
+				<!-- 调用子指令，对消息进行处理 -->
+				<get id="${msg}" value="${msg}"></get>
+			</mq-pull>
+		</mq-puller>
+
+
+		<!-- 连接push消费者 -->
+		<mq-pusher zookeeperConnector="127.0.0.1:2181" groupId="test"
+			sessionTimeoutMs="4000" syncTimeMs="200" autoCommitIntervalMs="1000"
+			autoOffsetReset="smallest" serializerClass="kafka.serializer.StringEncoder">
+			<!-- 接收消息 -->
+			<mq-push topic="mykafka" thread="1" id="msg" waittime="2000">
+				<!-- 调用子指令，对消息进行处理 -->
+				<get id="${msg}" value="${msg}"></get>
+			</mq-push>
+		</mq-pusher>
+
+		<!-- 管理topic相关命令 -->
+		<mq-admin zookeeperConnect="127.0.0.1:2181" sessionTimeoutMs="10000"
+			connectionTimeoutMs="8000">
+			<!-- 列出原始topic -->
+			<list-topic tag="original">
+			</list-topic>
+			<!-- 创建新的topic -->
+			<create-topic topic="test1219" partition="1"
+				replication="1"></create-topic>
+			<!-- 描述topic -->
+			<desc-topic topic="test1219" tag="desctopic"></desc-topic>
+			<!-- 列出创建后的topic -->
+			<list-topic tag="aftercreate">
+			</list-topic>
+			<!-- 删除topic -->
+			<del-topic topic="test1219">
+			</del-topic>
+			<!-- 列出删除后的topic -->
+			<list-topic tag="afterdelete">
+			</list-topic>
+
+		</mq-admin>		
+		
+
+	</mq-kafka>
+</script>

@@ -37,11 +37,9 @@ public class Demo {
 		settings.addSettings(new CommandLine(args));		
 		settings.addSettings("java:///conf/settings.xml#Demo", null, Settings.getResourceFactory());
 		
-		run("java:///xscript/testpush.xml#Demo",settings);
-		//run("java:///xscript/testsend.xml#Demo",settings);
-		//run("java:///xscript/testpull.xml#Demo",settings);
-		//run("java:///xscript/Test1.xml#Demo",settings);
-		//run("java:///xscript/Testadmin.xml#Demo",settings);
+		//run("java:///xscript/demo.xml#Demo",settings);
+		//run("java:///xscript/altertopic.xml#Demo",settings);
+		
 	}
 
 }
