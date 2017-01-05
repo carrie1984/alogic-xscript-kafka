@@ -11,7 +11,7 @@ import com.alogic.xscript.kafka.util.KKConnector;
 import com.alogic.xscript.kafka.util.TopicInfo;
 import com.anysoft.util.Properties;
 import com.anysoft.util.PropertiesConstants;
-import com.google.gson.Gson;
+
 /*
  * 描述topic详细信息
  * @author cuijialing
