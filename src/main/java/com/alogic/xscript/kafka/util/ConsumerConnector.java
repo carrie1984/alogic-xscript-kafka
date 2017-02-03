@@ -1,7 +1,7 @@
 package com.alogic.xscript.kafka.util;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.anysoft.util.Properties;
 import com.anysoft.util.PropertiesConstants;
@@ -17,9 +17,9 @@ import kafka.consumer.ConsumerConfig;
  */
 public class ConsumerConnector {
 	/*
-	 * a logger of log4j
+	 * a logger of slf4j
 	 */
-	protected static Logger logger = LogManager.getLogger(ConsumerConnector.class);
+	protected static final Logger logger = LoggerFactory.getLogger(ConsumerConnector.class);
 	
 	/*
 	 * consumer 连接参数

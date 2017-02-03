@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.I0Itec.zkclient.ZkClient;
 import org.I0Itec.zkclient.ZkConnection;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.anysoft.util.Properties;
 import com.anysoft.util.PropertiesConstants;
@@ -27,9 +27,9 @@ import scala.collection.Seq;
  */
 public class KKConnector {
 	/*
-	 * a logger of log4j
+	 * a logger of slf4j
 	 */
-	protected static Logger logger = LogManager.getLogger(KKConnector.class);
+	protected static final Logger logger = LoggerFactory.getLogger(KKConnector.class);
 	/*
 	 * kafka的连接参数
 	 */

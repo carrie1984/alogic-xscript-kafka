@@ -5,8 +5,9 @@ import java.util.concurrent.Future;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.anysoft.util.Properties;
 import com.anysoft.util.PropertiesConstants;
@@ -18,9 +19,9 @@ import com.anysoft.util.PropertiesConstants;
 public class ProducerConnector {
 	
 	/*
-	 * a logger of log4j
+	 * a logger of slf4j
 	 */
-	protected static Logger logger = LogManager.getLogger(ProducerConnector.class);
+	protected static final Logger logger = LoggerFactory.getLogger(ProducerConnector.class);
 	
 	
 	/*
@@ -159,6 +160,7 @@ public class ProducerConnector {
 	{
 		if(!isConnected())
 		{
+			
 			logger.error("the producer is not connected");
 		}
 		

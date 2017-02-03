@@ -2,9 +2,10 @@ package com.alogic.xscript.kafka.admin;
 
 import java.util.Map;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.alogic.load.Loader;
 import com.alogic.xscript.ExecuteWatcher;
 import com.alogic.xscript.Logiclet;
 import com.alogic.xscript.LogicletContext;
@@ -14,10 +15,10 @@ import com.anysoft.util.PropertiesConstants;
 
 public class KKCreateTopic extends KKAdminOperation{
 	
-	/**
-	 * a logger of log4j
+	/*
+	 * a logger of slf4j
 	 */
-	protected static Logger logger = LogManager.getLogger(KKCreateTopic.class);
+	protected static final Logger logger = LoggerFactory.getLogger(KKCreateTopic.class);
 	
 	
 	protected String topic = "";

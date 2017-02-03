@@ -8,8 +8,9 @@ import java.util.List;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.anysoft.util.Properties;
 import com.anysoft.util.PropertiesConstants;
@@ -24,9 +25,9 @@ import com.anysoft.util.PropertiesConstants;
 
 public class ConsuPullConn {
 	/*
-	 * a logger of log4j
+	 * a logger of slf4j
 	 */
-	protected static Logger logger = LogManager.getLogger(ConsuPullConn.class);
+	protected static final Logger logger = LoggerFactory.getLogger(ConsuPullConn.class);
 	/*
 	 * kafka pull consumer 连接参数
 	 */
