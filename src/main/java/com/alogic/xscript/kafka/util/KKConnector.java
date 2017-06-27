@@ -220,15 +220,4 @@ public class KKConnector {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

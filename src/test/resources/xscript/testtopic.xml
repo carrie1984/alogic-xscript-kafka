@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<script>
+	<using xmlTag="mq-kafka" module="com.alogic.xscript.kafka.MQKafka" />
+
+	<mq-kafka>
+		
+
+		<!-- 管理topic相关命令 -->
+		<mq-admin zookeeperConnect="10.19.156.44:2181" sessionTimeoutMs="10000"
+			connectionTimeoutMs="8000">
+			<!-- 列出原始topic -->
+			<list-topic tag="original">
+			</list-topic>
+			
+
+		</mq-admin>		
+		
+
+	</mq-kafka>
+</script>
