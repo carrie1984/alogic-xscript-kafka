@@ -17,8 +17,9 @@ import com.google.gson.Gson;
 public class SendMsg extends AbstractLogiclet{
 	
 	protected String acctId = "";
-	protected String type = "";
+	protected String event = "";
 	protected String topic = "";
+	protected String key = "";
 	protected String bootstrapServers = "";
 	protected static String keySerializer = "org.apache.kafka.common.serialization.StringSerializer";
 	protected static String valueSerializer = "org.apache.kafka.common.serialization.StringSerializer";
@@ -30,12 +31,13 @@ public class SendMsg extends AbstractLogiclet{
 		super.configure(p);
 
 		acctId = PropertiesConstants.getRaw(p, "acctId", acctId);
-		type = PropertiesConstants.getRaw(p, "type", type);
+		event = PropertiesConstants.getRaw(p, "event", event);
 		topic = PropertiesConstants.getRaw(p, "topic", topic);
+		key = PropertiesConstants.getRaw(p, "key", key);
 		bootstrapServers = PropertiesConstants.getRaw(p, "bootstrapServers", bootstrapServers);
 		}
 	
-	public static void sendMsg(String acctid,String type,String bootstrapservers,String topic)
+	public static void sendMsg(String acctid,String event,String bootstrapservers,String topic,String key)
 	{
 		java.util.Properties props = new java.util.Properties();
 		props.put("bootstrap.servers", bootstrapservers);
@@ -43,13 +45,17 @@ public class SendMsg extends AbstractLogiclet{
 		props.put("value.serializer", valueSerializer);
 		
 		KafkaProducer<String, String> producer = new KafkaProducer<String, String>(props);
-		Map<String, String> msg = new HashMap<>();
-		msg.put("acctId", acctid);
-		msg.put("type", type);
+		Map<String, Object> msg = new HashMap<>();
+		msg.put("id", key);
+		msg.put("msgType", "AcctMsg");
+		Map<String, String> parameters = new HashMap<>();
+		parameters.put("acctId", acctid);
+		parameters.put("event", event);
+		msg.put("parameters", parameters);
 		Gson msgGson = new Gson();
 		String msgjson = msgGson.toJson(msg);
 		System.err.println(msgjson);
-		ProducerRecord<String, String> record = new ProducerRecord<String, String>(topic,msgjson);
+		ProducerRecord<String, String> record = new ProducerRecord<String, String>(topic,key,msgjson);
 		
 		producer.send(record);
 
@@ -60,11 +66,12 @@ public class SendMsg extends AbstractLogiclet{
 	protected void onExecute(XsObject root, XsObject current, LogicletContext ctx,
 			ExecuteWatcher watcher){
 		String acctIdData = ctx.transform(acctId);
-		String typeData = ctx.transform(type);
+		String eventData = ctx.transform(event);
 		String topicData = ctx.transform(topic);
+		String keyData = ctx.transform(key);
 		String bootstrapServersData = ctx.transform(bootstrapServers);
 		
-		sendMsg(acctIdData, typeData, bootstrapServersData, topicData);
+		sendMsg(acctIdData, eventData, bootstrapServersData, topicData,keyData);
 		
 		
 	}
