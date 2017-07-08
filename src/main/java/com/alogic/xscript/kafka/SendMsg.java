@@ -47,10 +47,10 @@ public class SendMsg extends AbstractLogiclet{
 		KafkaProducer<String, String> producer = new KafkaProducer<String, String>(props);
 		Map<String, Object> msg = new HashMap<>();
 		msg.put("id", key);
-		msg.put("msgType", "AcctMsg");
+		msg.put("event", event);
 		Map<String, String> parameters = new HashMap<>();
 		parameters.put("acctId", acctid);
-		parameters.put("event", event);
+		//parameters.put("event", event);
 		msg.put("parameters", parameters);
 		Gson msgGson = new Gson();
 		String msgjson = msgGson.toJson(msg);
