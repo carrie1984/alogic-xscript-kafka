@@ -3,9 +3,18 @@
 	<using xmlTag="mq-kafka" module="com.alogic.xscript.kafka.MQKafka" />
 
 	<mq-kafka>
-		<send-msg bootstrapServers="127.0.0.1:9092" acctId="8888" 
+		<send-msg bootstrapServers="127.0.0.1:9092" acctId="9999" 
 		event="notify.bal.inc"
 		key="of9876hg"
+		topic="test"
+		>		
+		</send-msg>
+		<send-msg bootstrapServers="127.0.0.1:9092" 
+		servId="1000"
+		billingCycle="201707"
+		amount="100"		
+		event="notify.rbill"
+		key="11111111"
 		topic="test"
 		>		
 		</send-msg>
