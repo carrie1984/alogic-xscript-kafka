@@ -4,16 +4,17 @@
 
 	<mq-kafka>
 		
-
-		<!-- 管理topic相关命令 -->
-		<mq-admin zookeeperConnect="10.19.156.44:2181" sessionTimeoutMs="10000"
-			connectionTimeoutMs="8000">
-			<!-- 列出原始topic -->
-			<list-topic tag="original">
-			</list-topic>
-			
-
-		</mq-admin>		
+		<!-- 连接pull消费者 -->
+		<mq-puller bootstrapServer="localhost:9092" groupId="test"
+			enableAutoCommit="true" autoCommitIntervalMs="1000"
+			keyDeserializer="org.apache.kafka.common.serialization.StringDeserializer"
+			valueDeserializer="org.apache.kafka.common.serialization.StringDeserializer">
+			<!-- 接收消息 -->
+			<mq-pull id="msg" topic="yelai" pollTimeMs="100">
+				<!-- 调用子指令，对消息进行处理 -->
+				<get id="${msg}" value="${msg}"></get>
+			</mq-pull>
+		</mq-puller>
 		
 
 	</mq-kafka>
