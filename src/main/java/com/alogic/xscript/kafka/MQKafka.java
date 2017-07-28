@@ -21,6 +21,7 @@ public class MQKafka extends Segment{
 		registerModule("mq-puller", KKPuller.class);
 		registerModule("mq-admin", KKAdminConn.class);
 		registerModule("send-msg", SendMsg.class);
+		registerModule("kk-mq-sender", KKProducer.class);
 	}
 	
 	@Override
