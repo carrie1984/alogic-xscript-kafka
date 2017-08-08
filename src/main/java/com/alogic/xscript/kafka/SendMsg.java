@@ -38,6 +38,7 @@ public class SendMsg extends AbstractLogiclet{
 		props.put("bootstrap.servers", bootstrapservers);
 		props.put("key.serializer",keySerializer);
 		props.put("value.serializer", valueSerializer);
+		props.put("security.protocol", "sasl_plaintext");
 		
 		KafkaProducer<String, String> producer = new KafkaProducer<String, String>(props);
 		ProducerRecord<String, String> record = new ProducerRecord<String, String>(topic,key,msg);
